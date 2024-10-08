@@ -1,7 +1,7 @@
 export class Fornecedor {
   id: number;
   nome: string;
-  cnpj: number;
+  cnpj: string;
   telefone: string;
   email: string;
   criadorId: number;

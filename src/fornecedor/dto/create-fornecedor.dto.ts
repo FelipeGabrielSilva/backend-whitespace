@@ -1,6 +1,6 @@
 export class CreateFornecedorDto {
   nome: string;
-  cnpj: number;
+  cnpj: string;
   telefone: string;
   email: string;
   criadorId?: number;

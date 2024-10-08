@@ -10,7 +10,7 @@ generator client {
 model Fornecedor {
   id           Int                 @id @unique @default(autoincrement())
   nome         String              @db.VarChar(70)
-  cnpj         Int                 @unique
+  cnpj         String              @unique
   telefone     String              @db.VarChar(13)
   email        String              @unique @db.VarChar(70)
   criadoEm     DateTime            @default(now())
