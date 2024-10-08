@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
@@ -7,14 +15,14 @@ import { UpdateClienteDto } from './dto/update-cliente.dto';
 export class ClienteController {
   constructor(private readonly clienteService: ClienteService) {}
 
-  @Post()
+  @Post('registro')
   create(@Body() createClienteDto: CreateClienteDto) {
-    return this.clienteService.create(createClienteDto);
+    return this.clienteService.criarCliente(createClienteDto);
   }
 
   @Get()
   findAll() {
-    return this.clienteService.findAll();
+    return this.clienteService.procurarTodos();
   }
 
   @Get(':id')

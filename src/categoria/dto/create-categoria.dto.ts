@@ -1,1 +1,4 @@
-export class CreateCategoriaDto {}
+export class CreateCategoriaDto {
+  descricao: string;
+  criadorId?: number;
+}

@@ -1,16 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFornecedorDto } from './dto/create-fornecedor.dto';
 import { UpdateFornecedorDto } from './dto/update-fornecedor.dto';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class FornecedorService {
-  create(createFornecedorDto: CreateFornecedorDto) {
-    return 'This action adds a new fornecedor';
-  }
+  constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all fornecedor`;
-  }
+  criarFornecedor = async (fornecedorDto: CreateFornecedorDto) => {
+    try {
+      const { nome, cnpj, telefone, email, criadorId } = fornecedorDto;
+
+      const novoFornecedor = await this.prisma.fornecedor.create({
+        data: {
+          nome,
+          cnpj,
+          telefone,
+          email,
+          criadorId,
+        },
+      });
+
+      return novoFornecedor;
+    } catch (error) {
+      throw new Error(`Erro ao criar fornecedor: ${error.message}`);
+    }
+  };
+
+  procurarTodos = async () => {
+    return await this.prisma.fornecedor.findMany();
+  };
 
   findOne(id: number) {
     return `This action returns a #${id} fornecedor`;

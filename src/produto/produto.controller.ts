@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ProdutoService } from './produto.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
@@ -7,14 +15,14 @@ import { UpdateProdutoDto } from './dto/update-produto.dto';
 export class ProdutoController {
   constructor(private readonly produtoService: ProdutoService) {}
 
-  @Post()
+  @Post('registro')
   create(@Body() createProdutoDto: CreateProdutoDto) {
-    return this.produtoService.create(createProdutoDto);
+    return this.produtoService.criarProduto(createProdutoDto);
   }
 
   @Get()
   findAll() {
-    return this.produtoService.findAll();
+    return this.produtoService.procurarTodos();
   }
 
   @Get(':id')

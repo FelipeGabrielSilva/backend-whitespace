@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PedidoService } from './pedido.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
@@ -7,14 +15,14 @@ import { UpdatePedidoDto } from './dto/update-pedido.dto';
 export class PedidoController {
   constructor(private readonly pedidoService: PedidoService) {}
 
-  @Post()
+  @Post('registro')
   create(@Body() createPedidoDto: CreatePedidoDto) {
-    return this.pedidoService.create(createPedidoDto);
+    return this.pedidoService.criarPedido(createPedidoDto);
   }
 
   @Get()
   findAll() {
-    return this.pedidoService.findAll();
+    return this.pedidoService.procurarTodos();
   }
 
   @Get(':id')

@@ -1,0 +1,105 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Fornecedor {
+  id           Int                 @id @unique @default(autoincrement())
+  nome         String              @db.VarChar(70)
+  cnpj         Int                 @unique
+  telefone     String              @db.VarChar(13)
+  email        String              @unique @db.VarChar(70)
+  criadoEm     DateTime            @default(now())
+  atualizadoEm DateTime            @updatedAt
+  criadorId    Int
+  produtos     ProdutoFornecedor[]
+}
+
+model Cliente {
+  id           Int      @id @unique @default(autoincrement())
+  nome         String   @db.VarChar(70)
+  cnpjCpf      String   @unique @db.VarChar(14)
+  endereco     String   @db.VarChar(80)
+  telefone     String   @db.VarChar(13)
+  email        String   @unique @db.VarChar(70)
+  criadorId    Int
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  pedidos      Pedido[]
+}
+
+model Usuario {
+  id           Int      @id @unique @default(autoincrement())
+  nome         String   @db.VarChar(70)
+  email        String   @unique @db.VarChar(70)
+  senha        String   @db.VarChar(30)
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+}
+
+model Produto {
+  id           Int                 @id @unique @default(autoincrement())
+  descricao    String              @db.VarChar(20)
+  unMedida     String              @db.VarChar(45)
+  valorUn      Float
+  categoriaId  Int
+  quantidade   Int
+  criadoEm     DateTime            @default(now())
+  atualizadoEm DateTime            @updatedAt
+  criadorId    Int
+  categoria    Categoria           @relation(fields: [categoriaId], references: [id])
+  fornecedores ProdutoFornecedor[]
+  pedidos      MProdutoPedido[]
+}
+
+model Categoria {
+  id           Int       @id @unique @default(autoincrement())
+  descricao    String    @db.VarChar(45)
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+  criadorId    Int
+  produtos     Produto[]
+}
+
+enum StatusPedido {
+  PENDENTE
+  EM_ANDAMENTO
+  FINALIZADO
+  CANCELADO
+}
+
+model Pedido {
+  id         Int              @id @unique @default(autoincrement())
+  dataPedido DateTime         @default(now())
+  clienteId  Int
+  status     StatusPedido     @default(PENDENTE)
+  cliente    Cliente          @relation(fields: [clienteId], references: [id])
+  produtos   MProdutoPedido[]
+}
+
+model MProdutoPedido {
+  id         Int      @id @unique @default(autoincrement())
+  data       DateTime @default(now())
+  quantidade Int
+  valorTotal Float
+  produtoId  Int
+  pedidoId   Int
+  produto    Produto  @relation(fields: [produtoId], references: [id])
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id])
+}
+
+model ProdutoFornecedor {
+  id           Int        @id @unique @default(autoincrement())
+  produtoId    Int
+  fornecedorId Int
+  precoCompra  Float
+  criadoEm     DateTime   @default(now())
+  atualizadoEm DateTime   @updatedAt
+  criadorId    Int
+  produto      Produto    @relation(fields: [produtoId], references: [id])
+  fornecedor   Fornecedor @relation(fields: [fornecedorId], references: [id])
+}

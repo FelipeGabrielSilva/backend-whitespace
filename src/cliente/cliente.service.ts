@@ -1,16 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class ClienteService {
-  create(createClienteDto: CreateClienteDto) {
-    return 'This action adds a new cliente';
-  }
+  constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all cliente`;
-  }
+  criarCliente = async (clienteDto: CreateClienteDto) => {
+    try {
+      const { nome, cnpjCpf, endereco, telefone, email, criadorId } =
+        clienteDto;
+
+      const novoCliente = await this.prisma.cliente.create({
+        data: {
+          nome,
+          cnpjCpf,
+          endereco,
+          telefone,
+          email,
+          criadorId,
+        },
+      });
+
+      return novoCliente;
+    } catch (error) {
+      throw new Error(`Erro ao criar cliente: ${error.message}`);
+    }
+  };
+
+  procurarTodos = async () => {
+    return await this.prisma.cliente.findMany();
+  };
 
   findOne(id: number) {
     return `This action returns a #${id} cliente`;
