@@ -31,7 +31,7 @@ export class ProdutoFornecedorService {
     });
   };
 
-  async findOne(id: number) {
+  procurarUm = async (id: number) => {
     const produtoFornecedor = await this.prisma.produtoFornecedor.findUnique({
       where: { id },
       include: {
@@ -45,9 +45,9 @@ export class ProdutoFornecedorService {
     }
 
     return produtoFornecedor;
-  }
+  };
 
-  async update(id: number, updateDto: UpdateProdutoFornecedorDto) {
+  update = async (id: number, updateDto: UpdateProdutoFornecedorDto) => {
     const produtoFornecedor = await this.prisma.produtoFornecedor.findUnique({
       where: { id },
     });
@@ -60,9 +60,9 @@ export class ProdutoFornecedorService {
       where: { id },
       data: updateDto,
     });
-  }
+  };
 
-  async remove(id: number) {
+  remove = async (id: number) => {
     const produtoFornecedor = await this.prisma.produtoFornecedor.findUnique({
       where: { id },
     });
@@ -74,5 +74,5 @@ export class ProdutoFornecedorService {
     return await this.prisma.produtoFornecedor.delete({
       where: { id },
     });
-  }
+  };
 }

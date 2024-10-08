@@ -26,20 +26,20 @@ export class FornecedorController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fornecedorService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.fornecedorService.procurarUm(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateFornecedorDto: UpdateFornecedorDto,
   ) {
-    return this.fornecedorService.update(+id, updateFornecedorDto);
+    return this.fornecedorService.update(id, updateFornecedorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fornecedorService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.fornecedorService.remove(id);
   }
 }

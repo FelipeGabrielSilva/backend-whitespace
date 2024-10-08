@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { Produto } from '@prisma/client'; // Importe o modelo Produto do Prisma
@@ -42,25 +42,51 @@ export class ProdutoService {
     });
   };
 
-  async findOne(id: number) {
-    return this.prisma.produto.findUnique({
-      where: { id },
-      include: {
-        categoria: true,
-      },
-    });
-  }
+  procurarUm = async (id: number) => {
+    try {
+      const encontrado = await this.prisma.produto.findUnique({
+        where: { id: id },
+      });
 
-  async update(id: number, updateProdutoDto: UpdateProdutoDto) {
-    return this.prisma.produto.update({
-      where: { id },
-      data: updateProdutoDto,
-    });
-  }
+      if (encontrado) {
+        return {
+          message: 'Produto encontrado!',
+          encontrado,
+        };
+      } else {
+        throw new NotFoundException(`Produto com ID ${id} não encontrado.`);
+      }
+    } catch (error) {
+      throw new Error(`Erro ao procurar produto: ${error.message}`);
+    }
+  };
 
-  async remove(id: number) {
-    return this.prisma.produto.delete({
-      where: { id },
-    });
-  }
+  update = async (id: number, updateProdutoDto: UpdateProdutoDto) => {
+    try {
+      const encontrado = await this.prisma.produto.findUnique({
+        where: { id: id },
+      });
+
+      if (!encontrado) {
+        throw new NotFoundException(`Produto com ID ${id} não encontrado.`);
+      }
+
+      const produtoAtualizado = await this.prisma.produto.update({
+        where: { id: encontrado.id },
+        data: updateProdutoDto,
+      });
+
+      return produtoAtualizado;
+    } catch (error) {
+      throw new Error(`Erro ao atualizar produto: ${error.message}`);
+    }
+  };
+
+  remove = async (id: number) => {
+    try {
+      await this.prisma.produto.delete({ where: { id: id } });
+    } catch (error) {
+      throw new Error(`Erro ao deletar produto: ${error.message}`);
+    }
+  };
 }

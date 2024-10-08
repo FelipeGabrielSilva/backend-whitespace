@@ -24,24 +24,24 @@ export class MProdutoPedidoController {
 
   @Get()
   findAll() {
-    return this.mProdutoPedidoService.findAll();
+    return this.mProdutoPedidoService.procurarTodos();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mProdutoPedidoService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.mProdutoPedidoService.procurarUm(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateMProdutoPedidoDto: UpdateMProdutoPedidoDto,
   ) {
-    return this.mProdutoPedidoService.update(+id, updateMProdutoPedidoDto);
+    return this.mProdutoPedidoService.update(id, updateMProdutoPedidoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.mProdutoPedidoService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.mProdutoPedidoService.remove(id);
   }
 }

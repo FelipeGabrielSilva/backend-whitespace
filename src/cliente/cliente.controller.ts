@@ -26,17 +26,17 @@ export class ClienteController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clienteService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.clienteService.procurarUm(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {
-    return this.clienteService.update(+id, updateClienteDto);
+  update(@Param('id') id: number, @Body() updateClienteDto: UpdateClienteDto) {
+    return this.clienteService.update(id, updateClienteDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clienteService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.clienteService.remove(id);
   }
 }

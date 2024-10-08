@@ -14,7 +14,7 @@ export class MProdutoPedidoService {
 
   criarMProdutoPedido = async (
     createMProdutoPedidoDto: CreateMProdutoPedidoDto,
-  ) => {
+  ): Promise<MProdutoPedido> => {
     const { quantidade, produtoId, pedidoId } = createMProdutoPedidoDto;
 
     const produto = await this.prisma.produto.findUnique({
@@ -50,16 +50,16 @@ export class MProdutoPedidoService {
     return novoMProdutoPedido;
   };
 
-  async findAll(): Promise<MProdutoPedido[]> {
+  procurarTodos = async (): Promise<MProdutoPedido[]> => {
     return this.prisma.mProdutoPedido.findMany({
       include: {
         produto: true,
         pedido: true,
       },
     });
-  }
+  };
 
-  async findOne(id: number): Promise<MProdutoPedido> {
+  procurarUm = async (id: number): Promise<MProdutoPedido> => {
     const mProdutoPedido = await this.prisma.mProdutoPedido.findUnique({
       where: { id },
       include: {
@@ -75,12 +75,12 @@ export class MProdutoPedidoService {
     }
 
     return mProdutoPedido;
-  }
+  };
 
-  async update(
+  update = async (
     id: number,
     updateMProdutoPedidoDto: UpdateMProdutoPedidoDto,
-  ): Promise<MProdutoPedido> {
+  ): Promise<MProdutoPedido> => {
     const mProdutoPedidoExistente = await this.prisma.mProdutoPedido.findUnique(
       {
         where: { id },
@@ -97,9 +97,9 @@ export class MProdutoPedidoService {
       where: { id },
       data: updateMProdutoPedidoDto,
     });
-  }
+  };
 
-  async remove(id: number): Promise<MProdutoPedido> {
+  remove = async (id: number): Promise<MProdutoPedido> => {
     const mProdutoPedidoExistente = await this.prisma.mProdutoPedido.findUnique(
       {
         where: { id },
@@ -115,5 +115,5 @@ export class MProdutoPedidoService {
     return this.prisma.mProdutoPedido.delete({
       where: { id },
     });
-  }
+  };
 }

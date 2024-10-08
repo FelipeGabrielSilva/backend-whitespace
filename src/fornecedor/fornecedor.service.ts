@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFornecedorDto } from './dto/create-fornecedor.dto';
 import { UpdateFornecedorDto } from './dto/update-fornecedor.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -31,15 +31,51 @@ export class FornecedorService {
     return await this.prisma.fornecedor.findMany();
   };
 
-  findOne(id: number) {
-    return `This action returns a #${id} fornecedor`;
-  }
+  procurarUm = async (id: number) => {
+    try {
+      const encontrado = await this.prisma.fornecedor.findUnique({
+        where: { id: id },
+      });
 
-  update(id: number, updateFornecedorDto: UpdateFornecedorDto) {
-    return `This action updates a #${id} fornecedor`;
-  }
+      if (encontrado) {
+        return {
+          message: 'Fornecedor encontrado!',
+          encontrado,
+        };
+      } else {
+        throw new NotFoundException(`Fornecedor com ID ${id} não encontrado.`);
+      }
+    } catch (error) {
+      throw new Error(`Erro ao procurar fornecedor: ${error.message}`);
+    }
+  };
 
-  remove(id: number) {
-    return `This action removes a #${id} fornecedor`;
-  }
+  update = async (id: number, updateFornecedorDto: UpdateFornecedorDto) => {
+    try {
+      const encontrado = await this.prisma.fornecedor.findUnique({
+        where: { id: id },
+      });
+
+      if (!encontrado) {
+        throw new NotFoundException(`Fornecedor com ID ${id} não encontrado.`);
+      }
+
+      const fornecedorAtualizado = await this.prisma.fornecedor.update({
+        where: { id: encontrado.id },
+        data: updateFornecedorDto,
+      });
+
+      return fornecedorAtualizado;
+    } catch (error) {
+      throw new Error(`Erro ao atualizar fornecedor: ${error.message}`);
+    }
+  };
+
+  remove = async (id: number) => {
+    try {
+      await this.prisma.fornecedor.delete({ where: { id: id } });
+    } catch (error) {
+      throw new Error(`Erro ao deletar fornecedor: ${error.message}`);
+    }
+  };
 }

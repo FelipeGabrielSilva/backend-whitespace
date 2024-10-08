@@ -31,7 +31,7 @@ export class ProdutoFornecedorController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.produtoFornecedorService.findOne(id);
+    return this.produtoFornecedorService.procurarUm(id);
   }
 
   @Patch(':id')

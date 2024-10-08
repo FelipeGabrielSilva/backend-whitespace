@@ -33,49 +33,51 @@ export class PedidoService {
     });
   };
 
-  async findOne(id: number): Promise<Pedido> {
-    const pedido = await this.prisma.pedido.findUnique({
-      where: { id },
-      include: {
-        cliente: true,
-      },
-    });
+  procurarUm = async (id: number) => {
+    try {
+      const encontrado = await this.prisma.pedido.findUnique({
+        where: { id: id },
+      });
 
-    if (!pedido) {
-      throw new NotFoundException(`Pedido com ID ${id} não encontrado.`);
+      if (encontrado) {
+        return {
+          message: 'Pedido encontrado!',
+          encontrado,
+        };
+      } else {
+        throw new NotFoundException(`Pedido com ID ${id} não encontrado.`);
+      }
+    } catch (error) {
+      throw new Error(`Erro ao procurar pedido: ${error.message}`);
     }
+  };
 
-    return pedido;
-  }
+  update = async (id: number, updatePedidoDto: UpdatePedidoDto) => {
+    try {
+      const encontrado = await this.prisma.pedido.findUnique({
+        where: { id: id },
+      });
 
-  async update(id: number, updatePedidoDto: UpdatePedidoDto): Promise<Pedido> {
-    const pedidoExistente = await this.prisma.pedido.findUnique({
-      where: { id },
-    });
+      if (!encontrado) {
+        throw new NotFoundException(`Pedido com ID ${id} não encontrado.`);
+      }
 
-    if (!pedidoExistente) {
-      throw new NotFoundException(`Pedido com ID ${id} não encontrado.`);
+      const pedidoAtualizado = await this.prisma.pedido.update({
+        where: { id: encontrado.id },
+        data: updatePedidoDto,
+      });
+
+      return pedidoAtualizado;
+    } catch (error) {
+      throw new Error(`Erro ao atualizar pedido: ${error.message}`);
     }
+  };
 
-    return this.prisma.pedido.update({
-      where: { id },
-      data: {
-        ...updatePedidoDto, // Atualiza os campos que foram passados
-      },
-    });
-  }
-
-  async remove(id: number): Promise<Pedido> {
-    const pedidoExistente = await this.prisma.pedido.findUnique({
-      where: { id },
-    });
-
-    if (!pedidoExistente) {
-      throw new NotFoundException(`Pedido com ID ${id} não encontrado.`);
+  remove = async (id: number) => {
+    try {
+      await this.prisma.pedido.delete({ where: { id: id } });
+    } catch (error) {
+      throw new Error(`Erro ao deletar pedido: ${error.message}`);
     }
-
-    return this.prisma.pedido.delete({
-      where: { id },
-    });
-  }
+  };
 }

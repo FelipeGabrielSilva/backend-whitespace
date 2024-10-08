@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -33,15 +33,51 @@ export class ClienteService {
     return await this.prisma.cliente.findMany();
   };
 
-  findOne(id: number) {
-    return `This action returns a #${id} cliente`;
-  }
+  procurarUm = async (id: number) => {
+    try {
+      const encontrado = await this.prisma.cliente.findUnique({
+        where: { id: id },
+      });
 
-  update(id: number, updateClienteDto: UpdateClienteDto) {
-    return `This action updates a #${id} cliente`;
-  }
+      if (encontrado) {
+        return {
+          message: 'Cliente encontrado!',
+          encontrado,
+        };
+      } else {
+        throw new NotFoundException(`Cliente com ID ${id} não encontrado.`);
+      }
+    } catch (error) {
+      throw new Error(`Erro ao procurar cliente: ${error.message}`);
+    }
+  };
 
-  remove(id: number) {
-    return `This action removes a #${id} cliente`;
-  }
+  update = async (id: number, updateClienteDto: UpdateClienteDto) => {
+    try {
+      const encontrado = await this.prisma.cliente.findUnique({
+        where: { id: id },
+      });
+
+      if (!encontrado) {
+        throw new NotFoundException(`Cliente com ID ${id} não encontrado.`);
+      }
+
+      const clienteAtualizado = await this.prisma.cliente.update({
+        where: { id: encontrado.id },
+        data: updateClienteDto,
+      });
+
+      return clienteAtualizado;
+    } catch (error) {
+      throw new Error(`Erro ao atualizar cliente: ${error.message}`);
+    }
+  };
+
+  remove = async (id: number) => {
+    try {
+      await this.prisma.cliente.delete({ where: { id: id } });
+    } catch (error) {
+      throw new Error(`Erro ao deletar cliente: ${error.message}`);
+    }
+  };
 }

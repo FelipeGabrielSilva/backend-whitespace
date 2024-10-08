@@ -26,20 +26,20 @@ export class CategoriaController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriaService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.categoriaService.procurarUm(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateCategoriaDto: UpdateCategoriaDto,
   ) {
-    return this.categoriaService.update(+id, updateCategoriaDto);
+    return this.categoriaService.update(id, updateCategoriaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.categoriaService.remove(+id);
   }
 }

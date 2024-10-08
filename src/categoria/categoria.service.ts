@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
@@ -25,18 +25,56 @@ export class CategoriaService {
   };
 
   procurarTodos = async () => {
-    return await this.prisma.categoria.findMany();
+    try {
+      return await this.prisma.categoria.findMany();
+    } catch (error) {
+      throw new Error(`Erro ao procurar usuários: ${error.message}`);
+    }
   };
 
-  findOne(id: number) {
-    return `This action returns a #${id} categoria`;
-  }
+  procurarUm = async (id: number) => {
+    try {
+      const encontrado = await this.prisma.usuario.findUnique({
+        where: { id: id },
+      });
 
-  update(id: number, updateCategoriaDto: UpdateCategoriaDto) {
-    return `This action updates a #${id} categoria`;
-  }
+      if (encontrado) {
+        return {
+          message: 'Usuário encontrado!',
+          encontrado,
+        };
+      }
+    } catch (error) {
+      throw new Error(`Erro ao procurar usuário: ${error.message}`);
+    }
+  };
 
-  remove(id: number) {
-    return `This action removes a #${id} categoria`;
-  }
+  update = async (id: number, updateCategoriaDto: UpdateCategoriaDto) => {
+    try {
+      const encontrado = await this.prisma.categoria.findUnique({
+        where: { id: id },
+      });
+
+      if (!encontrado) {
+        throw new NotFoundException(`Categoria com ID ${id} não encontrada.`);
+      }
+
+      const categoriaAtualizada = await this.prisma.categoria.update({
+        where: { id: encontrado.id },
+        data: updateCategoriaDto,
+      });
+
+      return categoriaAtualizada;
+    } catch (error) {
+      throw new Error(`Erro ao atualizar categoria: ${error.message}`);
+    }
+  };
+
+  remove = async (id: number) => {
+    try {
+      await this.prisma.usuario.delete({ where: { id: id } });
+    } catch (error) {
+      throw new Error(`Erro ao deletar usuário: ${error.message}`);
+    }
+  };
 }
