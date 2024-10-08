@@ -27,7 +27,7 @@ export class FornecedorController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.fornecedorService.procurarUm(id);
+    return this.fornecedorService.procurarUm(+id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class FornecedorController {
     @Param('id') id: number,
     @Body() updateFornecedorDto: UpdateFornecedorDto,
   ) {
-    return this.fornecedorService.update(id, updateFornecedorDto);
+    return this.fornecedorService.update(+id, updateFornecedorDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.fornecedorService.remove(id);
+    return this.fornecedorService.remove(+id);
   }
 }

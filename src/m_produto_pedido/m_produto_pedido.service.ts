@@ -99,7 +99,7 @@ export class MProdutoPedidoService {
     });
   };
 
-  remove = async (id: number): Promise<MProdutoPedido> => {
+  remove = async (id: number) => {
     const mProdutoPedidoExistente = await this.prisma.mProdutoPedido.findUnique(
       {
         where: { id },
@@ -112,8 +112,10 @@ export class MProdutoPedidoService {
       );
     }
 
-    return this.prisma.mProdutoPedido.delete({
+    await this.prisma.mProdutoPedido.delete({
       where: { id },
     });
+
+    return `Registro de movimentação com ID ${id} removido com sucesso.`;
   };
 }

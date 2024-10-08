@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -51,11 +51,49 @@ export class UsuarioService {
     }
   };
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
-  }
+  update = async (id: number, updateUsuarioDto: UpdateUsuarioDto) => {
+    try {
+      const usuarioExistente = await this.prisma.usuario.findUnique({
+        where: { id },
+      });
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
-  }
+      if (!usuarioExistente) {
+        throw new NotFoundException(`Usuário com ID ${id} não encontrado.`);
+      }
+
+      const usuarioAtualizado = await this.prisma.usuario.update({
+        where: { id },
+        data: updateUsuarioDto,
+      });
+
+      return {
+        message: 'Usuário atualizado com sucesso!',
+        usuario: usuarioAtualizado,
+      };
+    } catch (error) {
+      throw new Error(`Erro ao atualizar usuário: ${error.message}`);
+    }
+  };
+
+  remove = async (id: number) => {
+    try {
+      const usuarioExistente = await this.prisma.usuario.findUnique({
+        where: { id },
+      });
+
+      if (!usuarioExistente) {
+        throw new NotFoundException(`Usuário com ID ${id} não encontrado.`);
+      }
+
+      await this.prisma.usuario.delete({
+        where: { id },
+      });
+
+      return {
+        message: `Usuário com ID ${id} removido com sucesso.`,
+      };
+    } catch (error) {
+      throw new Error(`Erro ao remover usuário: ${error.message}`);
+    }
+  };
 }

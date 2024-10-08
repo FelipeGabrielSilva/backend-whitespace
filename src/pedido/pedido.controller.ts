@@ -27,16 +27,16 @@ export class PedidoController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.pedidoService.procurarUm(id);
+    return this.pedidoService.procurarUm(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() updatePedidoDto: UpdatePedidoDto) {
-    return this.pedidoService.update(id, updatePedidoDto);
+    return this.pedidoService.update(+id, updatePedidoDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.pedidoService.remove(id);
+    return this.pedidoService.remove(+id);
   }
 }

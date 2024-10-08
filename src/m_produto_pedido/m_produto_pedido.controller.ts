@@ -29,7 +29,7 @@ export class MProdutoPedidoController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.mProdutoPedidoService.procurarUm(id);
+    return this.mProdutoPedidoService.procurarUm(+id);
   }
 
   @Patch(':id')
@@ -37,11 +37,11 @@ export class MProdutoPedidoController {
     @Param('id') id: number,
     @Body() updateMProdutoPedidoDto: UpdateMProdutoPedidoDto,
   ) {
-    return this.mProdutoPedidoService.update(id, updateMProdutoPedidoDto);
+    return this.mProdutoPedidoService.update(+id, updateMProdutoPedidoDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.mProdutoPedidoService.remove(id);
+    return this.mProdutoPedidoService.remove(+id);
   }
 }

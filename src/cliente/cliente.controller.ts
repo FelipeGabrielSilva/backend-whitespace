@@ -27,16 +27,16 @@ export class ClienteController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.clienteService.procurarUm(id);
+    return this.clienteService.procurarUm(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateClienteDto: UpdateClienteDto) {
-    return this.clienteService.update(id, updateClienteDto);
+    return this.clienteService.update(+id, updateClienteDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.clienteService.remove(id);
+    return this.clienteService.remove(+id);
   }
 }

@@ -27,16 +27,16 @@ export class UsuarioController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.usuarioService.procurarUm(id);
+    return this.usuarioService.procurarUm(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuarioService.update(id, updateUsuarioDto);
+    return this.usuarioService.update(+id, updateUsuarioDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.usuarioService.remove(id);
+    return this.usuarioService.remove(+id);
   }
 }

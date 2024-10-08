@@ -27,7 +27,7 @@ export class CategoriaController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.categoriaService.procurarUm(id);
+    return this.categoriaService.procurarUm(+id);
   }
 
   @Patch(':id')
@@ -35,7 +35,7 @@ export class CategoriaController {
     @Param('id') id: number,
     @Body() updateCategoriaDto: UpdateCategoriaDto,
   ) {
-    return this.categoriaService.update(id, updateCategoriaDto);
+    return this.categoriaService.update(+id, updateCategoriaDto);
   }
 
   @Delete(':id')

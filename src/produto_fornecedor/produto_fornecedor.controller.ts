@@ -31,7 +31,7 @@ export class ProdutoFornecedorController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.produtoFornecedorService.procurarUm(id);
+    return this.produtoFornecedorService.procurarUm(+id);
   }
 
   @Patch(':id')
@@ -39,11 +39,14 @@ export class ProdutoFornecedorController {
     @Param('id') id: number,
     @Body() updateProdutoFornecedorDto: UpdateProdutoFornecedorDto,
   ) {
-    return this.produtoFornecedorService.update(id, updateProdutoFornecedorDto);
+    return this.produtoFornecedorService.update(
+      +id,
+      updateProdutoFornecedorDto,
+    );
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.produtoFornecedorService.remove(id);
+    return this.produtoFornecedorService.remove(+id);
   }
 }

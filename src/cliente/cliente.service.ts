@@ -76,6 +76,8 @@ export class ClienteService {
   remove = async (id: number) => {
     try {
       await this.prisma.cliente.delete({ where: { id: id } });
+
+      return `Cliente com ID ${id} removido com sucesso.`;
     } catch (error) {
       throw new Error(`Erro ao deletar cliente: ${error.message}`);
     }

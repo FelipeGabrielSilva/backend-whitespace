@@ -11,6 +11,14 @@ export class FornecedorService {
     try {
       const { nome, cnpj, telefone, email, criadorId } = fornecedorDto;
 
+      const fornecedorExistente = await this.prisma.fornecedor.findUnique({
+        where: { cnpj: fornecedorDto.cnpj },
+      });
+
+      if (fornecedorExistente) {
+        throw new Error('Fornecedor com esse CNPJ já existe.');
+      }
+
       const novoFornecedor = await this.prisma.fornecedor.create({
         data: {
           nome,
@@ -74,6 +82,8 @@ export class FornecedorService {
   remove = async (id: number) => {
     try {
       await this.prisma.fornecedor.delete({ where: { id: id } });
+
+      return `Fornecedor com ID ${id} removido com sucesso.`;
     } catch (error) {
       throw new Error(`Erro ao deletar fornecedor: ${error.message}`);
     }

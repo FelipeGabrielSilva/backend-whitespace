@@ -28,24 +28,24 @@ export class CategoriaService {
     try {
       return await this.prisma.categoria.findMany();
     } catch (error) {
-      throw new Error(`Erro ao procurar usuários: ${error.message}`);
+      throw new Error(`Erro ao procurar Categorias: ${error.message}`);
     }
   };
 
   procurarUm = async (id: number) => {
     try {
-      const encontrado = await this.prisma.usuario.findUnique({
+      const encontrado = await this.prisma.categoria.findUnique({
         where: { id: id },
       });
 
       if (encontrado) {
         return {
-          message: 'Usuário encontrado!',
+          message: 'Categoria encontrada!',
           encontrado,
         };
       }
     } catch (error) {
-      throw new Error(`Erro ao procurar usuário: ${error.message}`);
+      throw new Error(`Erro ao procurar categoria: ${error.message}`);
     }
   };
 
@@ -72,9 +72,11 @@ export class CategoriaService {
 
   remove = async (id: number) => {
     try {
-      await this.prisma.usuario.delete({ where: { id: id } });
+      await this.prisma.categoria.delete({ where: { id: id } });
+
+      return `Categoria com ID ${id} removido com sucesso.`;
     } catch (error) {
-      throw new Error(`Erro ao deletar usuário: ${error.message}`);
+      throw new Error(`Erro ao deletar categoria: ${error.message}`);
     }
   };
 }

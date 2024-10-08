@@ -85,6 +85,8 @@ export class ProdutoService {
   remove = async (id: number) => {
     try {
       await this.prisma.produto.delete({ where: { id: id } });
+
+      return `Produto com ID ${id} removido com sucesso.`;
     } catch (error) {
       throw new Error(`Erro ao deletar produto: ${error.message}`);
     }

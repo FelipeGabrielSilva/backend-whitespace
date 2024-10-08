@@ -76,6 +76,8 @@ export class PedidoService {
   remove = async (id: number) => {
     try {
       await this.prisma.pedido.delete({ where: { id: id } });
+
+      return `Pedido com ID ${id} removido com sucesso.`;
     } catch (error) {
       throw new Error(`Erro ao deletar pedido: ${error.message}`);
     }
