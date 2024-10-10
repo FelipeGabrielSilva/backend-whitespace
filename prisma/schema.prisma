@@ -22,7 +22,7 @@ model Fornecedor {
 model Cliente {
   id           Int      @id @unique @default(autoincrement())
   nome         String   @db.VarChar(70)
-  cnpjCpf      String   @unique @db.VarChar(14)
+  cnpjCpf      String   @unique @db.VarChar(20)
   endereco     String   @db.VarChar(80)
   telefone     String   @db.VarChar(13)
   email        String   @unique @db.VarChar(70)
@@ -58,7 +58,7 @@ model Produto {
 
 model Categoria {
   id           Int       @id @unique @default(autoincrement())
-  descricao    String    @db.VarChar(45)
+  descricao    String    @unique @db.VarChar(45)
   criadoEm     DateTime  @default(now())
   atualizadoEm DateTime  @updatedAt
   criadorId    Int

@@ -2,7 +2,7 @@
 CREATE TABLE `Fornecedor` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `nome` VARCHAR(70) NOT NULL,
-    `cnpj` INTEGER NOT NULL,
+    `cnpj` VARCHAR(191) NOT NULL,
     `telefone` VARCHAR(13) NOT NULL,
     `email` VARCHAR(70) NOT NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

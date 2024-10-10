@@ -1,15 +1,16 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { DateFormatInterceptor } from './utils/date_format.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Habilita CORS com a origem específica
+  app.useGlobalInterceptors(new DateFormatInterceptor());
+
   app.enableCors({
-    origin: 'http://localhost:3000', // Substitua pela URL do seu frontend se for diferente
+    origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
   });
 
   app.useGlobalPipes(
