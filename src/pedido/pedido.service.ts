@@ -1,42 +1,62 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma.service';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
-import { Pedido } from '@prisma/client';
-import { PrismaService } from 'src/prisma.service';
+import { ItemPedidoService } from 'src/item_pedido/item_pedido.service';
+import { MovimentacaoEstoqueService } from 'src/movimentacao_estoque/movimentacao_estoque.service';
 
 @Injectable()
 export class PedidoService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private itemPedidoService: ItemPedidoService,
+    private movimentacaoEstoqueService: MovimentacaoEstoqueService,
+  ) {}
 
-  criarPedido = async (createPedidoDto: CreatePedidoDto): Promise<Pedido> => {
+  async criarPedido(pedidoDto: CreatePedidoDto) {
     try {
-      const { clienteId, status } = createPedidoDto;
+      const { clienteId, produtos } = pedidoDto;
 
       const novoPedido = await this.prisma.pedido.create({
         data: {
           clienteId,
-          status,
         },
       });
 
+      await Promise.all(
+        produtos.map(async (produtoDto) => {
+          await this.itemPedidoService.criarItemPedido(
+            produtoDto,
+            novoPedido.id,
+          );
+
+          await this.movimentacaoEstoqueService.criarMovimentacao({
+            produtoId: produtoDto.produtoId,
+            tipo: 'SAIDA',
+            quantidade: produtoDto.quantidade,
+            observacao: `Saída por pedido: ${novoPedido.id}`,
+            criadorId: 1,
+          });
+        }),
+      );
+
       return novoPedido;
     } catch (error) {
-      throw new Error(`Erro ao criar pedido: ${error}`);
+      throw new Error(`Erro ao criar pedido: ${error.message}`);
     }
-  };
+  }
 
   procurarTodos = async () => {
     return await this.prisma.pedido.findMany({
-      include: {
-        cliente: true,
-      },
+      include: { cliente: true, produtos: true },
     });
   };
 
   procurarUm = async (id: number) => {
     try {
       const encontrado = await this.prisma.pedido.findUnique({
-        where: { id: id },
+        where: { id },
+        include: { cliente: true, produtos: true },
       });
 
       if (encontrado) {
@@ -55,7 +75,7 @@ export class PedidoService {
   update = async (id: number, updatePedidoDto: UpdatePedidoDto) => {
     try {
       const encontrado = await this.prisma.pedido.findUnique({
-        where: { id: id },
+        where: { id },
       });
 
       if (!encontrado) {
@@ -75,7 +95,7 @@ export class PedidoService {
 
   remove = async (id: number) => {
     try {
-      await this.prisma.pedido.delete({ where: { id: id } });
+      await this.prisma.pedido.delete({ where: { id } });
 
       return `Pedido com ID ${id} removido com sucesso.`;
     } catch (error) {

@@ -20,7 +20,6 @@ export class ClienteController {
 
   @Post('registro')
   create(@Body() createClienteDto: CreateClienteDto) {
-    console.log(createClienteDto); // Verifica os dados formatados
     return this.clienteService.criarCliente(createClienteDto);
   }
 

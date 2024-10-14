@@ -7,10 +7,12 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { ProdutoModule } from './produto/produto.module';
 import { PedidoModule } from './pedido/pedido.module';
 import { ClienteModule } from './cliente/cliente.module';
-import { MProdutoPedidoModule } from './m_produto_pedido/m_produto_pedido.module';
+import { MProdutoPedidoModule } from './item_pedido/item_pedido.module';
 import { ProdutoFornecedorModule } from './produto_fornecedor/produto_fornecedor.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { FormatCpfCnpjInterceptor } from './utils/cpf_cnpj_format.interceptor';
+import { MovimentacaoEstoqueModule } from './movimentacao_estoque/movimentacao_estoque.module';
+import { DateFormattingInterceptor } from './utils/date_format.interceptor';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { FormatCpfCnpjInterceptor } from './utils/cpf_cnpj_format.interceptor';
     ClienteModule,
     MProdutoPedidoModule,
     ProdutoFornecedorModule,
+    MovimentacaoEstoqueModule,
   ],
   controllers: [AppController],
   providers: [
@@ -29,6 +32,10 @@ import { FormatCpfCnpjInterceptor } from './utils/cpf_cnpj_format.interceptor';
     {
       provide: APP_INTERCEPTOR,
       useClass: FormatCpfCnpjInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DateFormattingInterceptor,
     },
   ],
 })

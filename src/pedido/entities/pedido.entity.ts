@@ -1,10 +1,10 @@
-import { StatusPedido } from '@prisma/client';
-import { Cliente } from 'src/cliente/entities/cliente.entity';
+import { Cliente, ItemPedido, StatusPedido } from "@prisma/client";
 
 export class Pedido {
-  id: number;
-  dataPedido: Date;
-  clienteId: number;
-  status: StatusPedido;
-  cliente: Cliente;
-}
+    id: number;
+    dataPedido: Date;
+    clienteId: number;
+    status: StatusPedido;
+    cliente: Cliente;
+    produtos: ItemPedido[];
+  }

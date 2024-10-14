@@ -1,4 +1,4 @@
-export class MProdutoPedido {
+export class ItemPedido {
   quantidade: number;
   produtoId: number;
   pedidoId: number;

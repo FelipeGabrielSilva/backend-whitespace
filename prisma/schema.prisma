@@ -42,18 +42,19 @@ model Usuario {
 }
 
 model Produto {
-  id           Int                 @id @unique @default(autoincrement())
-  descricao    String              @db.VarChar(20)
-  unMedida     String              @db.VarChar(45)
+  id           Int                   @id @unique @default(autoincrement())
+  descricao    String                @db.VarChar(20)
+  unMedida     String                @db.VarChar(45)
   valorUn      Float
   categoriaId  Int
   quantidade   Int
-  criadoEm     DateTime            @default(now())
-  atualizadoEm DateTime            @updatedAt
+  criadoEm     DateTime              @default(now())
+  atualizadoEm DateTime              @updatedAt
   criadorId    Int
-  categoria    Categoria           @relation(fields: [categoriaId], references: [id])
+  categoria    Categoria             @relation(fields: [categoriaId], references: [id])
   fornecedores ProdutoFornecedor[]
-  pedidos      MProdutoPedido[]
+  pedidos      ItemPedido[]
+  estoque      MovimentacaoEstoque[]
 }
 
 model Categoria {
@@ -73,15 +74,15 @@ enum StatusPedido {
 }
 
 model Pedido {
-  id         Int              @id @unique @default(autoincrement())
-  dataPedido DateTime         @default(now())
+  id         Int          @id @unique @default(autoincrement())
+  dataPedido DateTime     @default(now())
   clienteId  Int
-  status     StatusPedido     @default(PENDENTE)
-  cliente    Cliente          @relation(fields: [clienteId], references: [id])
-  produtos   MProdutoPedido[]
+  status     StatusPedido @default(PENDENTE)
+  cliente    Cliente      @relation(fields: [clienteId], references: [id])
+  produtos   ItemPedido[]
 }
 
-model MProdutoPedido {
+model ItemPedido {
   id         Int      @id @unique @default(autoincrement())
   data       DateTime @default(now())
   quantidade Int
@@ -90,6 +91,8 @@ model MProdutoPedido {
   pedidoId   Int
   produto    Produto  @relation(fields: [produtoId], references: [id])
   pedido     Pedido   @relation(fields: [pedidoId], references: [id])
+
+  @@unique([produtoId, pedidoId])
 }
 
 model ProdutoFornecedor {
@@ -102,4 +105,20 @@ model ProdutoFornecedor {
   criadorId    Int
   produto      Produto    @relation(fields: [produtoId], references: [id])
   fornecedor   Fornecedor @relation(fields: [fornecedorId], references: [id])
+}
+
+enum TipoMovimentacao {
+  ENTRADA
+  SAIDA
+}
+
+model MovimentacaoEstoque {
+  id               Int              @id @unique @default(autoincrement())
+  produtoId        Int
+  tipo             TipoMovimentacao
+  quantidade       Int
+  dataMovimentacao DateTime         @default(now())
+  observacao       String?          @db.VarChar(255)
+  criadorId        Int
+  produto          Produto          @relation(fields: [produtoId], references: [id])
 }

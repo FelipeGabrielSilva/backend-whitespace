@@ -1,19 +1,14 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CreateMProdutoPedidoDto {
-  
+export class CreateItemPedidoDto {
   @IsNumber()
   @IsNotEmpty()
   quantidade: number;
-  
+
   @IsNumber()
   @IsNotEmpty()
   produtoId: number;
-  
-  @IsNumber()
-  @IsNotEmpty()
-  pedidoId: number;
-  
+
   @IsNumber()
   @IsNotEmpty()
   valorTotal: number;

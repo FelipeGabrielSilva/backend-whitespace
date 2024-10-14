@@ -19,7 +19,7 @@ CREATE TABLE `Fornecedor` (
 CREATE TABLE `Cliente` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `nome` VARCHAR(70) NOT NULL,
-    `cnpjCpf` VARCHAR(14) NOT NULL,
+    `cnpjCpf` VARCHAR(20) NOT NULL,
     `endereco` VARCHAR(80) NOT NULL,
     `telefone` VARCHAR(13) NOT NULL,
     `email` VARCHAR(70) NOT NULL,
@@ -72,6 +72,7 @@ CREATE TABLE `Categoria` (
     `criadorId` INTEGER NOT NULL,
 
     UNIQUE INDEX `Categoria_id_key`(`id`),
+    UNIQUE INDEX `Categoria_descricao_key`(`descricao`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -87,7 +88,7 @@ CREATE TABLE `Pedido` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `MProdutoPedido` (
+CREATE TABLE `ItemPedido` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `data` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `quantidade` INTEGER NOT NULL,
@@ -95,7 +96,8 @@ CREATE TABLE `MProdutoPedido` (
     `produtoId` INTEGER NOT NULL,
     `pedidoId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `MProdutoPedido_id_key`(`id`),
+    UNIQUE INDEX `ItemPedido_id_key`(`id`),
+    UNIQUE INDEX `ItemPedido_produtoId_pedidoId_key`(`produtoId`, `pedidoId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -113,6 +115,20 @@ CREATE TABLE `ProdutoFornecedor` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `MovimentacaoEstoque` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `produtoId` INTEGER NOT NULL,
+    `tipo` ENUM('ENTRADA', 'SAIDA') NOT NULL,
+    `quantidade` INTEGER NOT NULL,
+    `dataMovimentacao` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `observacao` VARCHAR(255) NULL,
+    `criadorId` INTEGER NOT NULL,
+
+    UNIQUE INDEX `MovimentacaoEstoque_id_key`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Produto` ADD CONSTRAINT `Produto_categoriaId_fkey` FOREIGN KEY (`categoriaId`) REFERENCES `Categoria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -120,13 +136,16 @@ ALTER TABLE `Produto` ADD CONSTRAINT `Produto_categoriaId_fkey` FOREIGN KEY (`ca
 ALTER TABLE `Pedido` ADD CONSTRAINT `Pedido_clienteId_fkey` FOREIGN KEY (`clienteId`) REFERENCES `Cliente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `MProdutoPedido` ADD CONSTRAINT `MProdutoPedido_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `Produto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `ItemPedido` ADD CONSTRAINT `ItemPedido_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `Produto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `MProdutoPedido` ADD CONSTRAINT `MProdutoPedido_pedidoId_fkey` FOREIGN KEY (`pedidoId`) REFERENCES `Pedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `ItemPedido` ADD CONSTRAINT `ItemPedido_pedidoId_fkey` FOREIGN KEY (`pedidoId`) REFERENCES `Pedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ProdutoFornecedor` ADD CONSTRAINT `ProdutoFornecedor_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `Produto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ProdutoFornecedor` ADD CONSTRAINT `ProdutoFornecedor_fornecedorId_fkey` FOREIGN KEY (`fornecedorId`) REFERENCES `Fornecedor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MovimentacaoEstoque` ADD CONSTRAINT `MovimentacaoEstoque_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `Produto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

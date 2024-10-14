@@ -1,5 +1,3 @@
-// date-format.interceptor.ts
-
 import {
   Injectable,
   NestInterceptor,
@@ -10,36 +8,46 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class DateFormatInterceptor implements NestInterceptor {
+export class DateFormattingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    return next.handle().pipe(map((data) => this.formatDates(data)));
+    return next.handle().pipe(
+      map((data) => {
+        return this.formatDate(data);
+      }),
+    );
   }
 
-  private formatDates(data: any) {
-    const formatDate = (dateString: string) => {
-      const date = new Date(dateString);
-      const day = String(date.getUTCDate()).padStart(2, '0');
-      const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-      const year = date.getUTCFullYear();
-      const hours = String(date.getUTCHours() - 3).padStart(2, '0'); // Ajusta para UTC-3
-      const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-      return `${day}/${month}/${year} ${hours}:${minutes}`;
-    };
-
-    const formatItem = (item: any) => {
-      return {
-        ...item,
-        criadoEm: formatDate(item.criadoEm),
-        atualizadoEm: formatDate(item.atualizadoEm),
-      };
-    };
-
-    if (Array.isArray(data)) {
-      return data.map(formatItem);
-    } else if (data && typeof data === 'object') {
-      return formatItem(data);
+  private formatDate(data: any): any {
+    if (data === null || data === undefined) {
+      return data;
     }
 
-    return data; // Retorna o dado original se não for um objeto ou array
+    if (data instanceof Date) {
+      return this.formatDateToString(data);
+    }
+
+    if (Array.isArray(data)) {
+      return data.map((item) => this.formatDate(item));
+    }
+
+    if (typeof data === 'object') {
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          data[key] = this.formatDate(data[key]);
+        }
+      }
+    }
+
+    return data;
+  }
+
+  private formatDateToString(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
   }
 }

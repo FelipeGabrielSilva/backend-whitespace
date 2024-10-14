@@ -1,9 +1,13 @@
-import { StatusPedido } from '@prisma/client';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
+import { ArrayMinSize, IsNumber, ValidateNested } from 'class-validator';
+import { CreateItemPedidoDto } from 'src/item_pedido/dto/create-item_pedido.dto';
 
 export class CreatePedidoDto {
   @IsNumber()
-  @IsNotEmpty()
   clienteId: number;
-  status: StatusPedido;
+
+  @ValidateNested({ each: true })
+  @ArrayMinSize(1) 
+  @Type(() => CreateItemPedidoDto)
+  produtos: CreateItemPedidoDto[];
 }
