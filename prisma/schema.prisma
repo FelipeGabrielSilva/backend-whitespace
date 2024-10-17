@@ -43,8 +43,8 @@ model Usuario {
 
 model Produto {
   id           Int                   @id @unique @default(autoincrement())
-  descricao    String                @db.VarChar(20)
-  unMedida     String                @db.VarChar(45)
+  descricao    String                @db.VarChar(70)
+  precoCompra  Float
   valorUn      Float
   categoriaId  Int
   quantidade   Int
@@ -55,6 +55,16 @@ model Produto {
   fornecedores ProdutoFornecedor[]
   pedidos      ItemPedido[]
   estoque      MovimentacaoEstoque[]
+  medidaId     Int
+  medida       Medida                @relation(fields: [medidaId], references: [id])
+}
+
+model Medida {
+  id           Int       @id @unique @default(autoincrement())
+  descricao    String
+  produtos     Produto[]
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
 }
 
 model Categoria {

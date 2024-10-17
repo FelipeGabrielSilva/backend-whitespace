@@ -5,9 +5,13 @@ export class CreateProdutoDto {
   @IsNotEmpty()
   descricao: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  unMedida: string;
+  medidaId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  precoCompra: number;
 
   @IsNumber()
   @IsNotEmpty()
@@ -24,4 +28,7 @@ export class CreateProdutoDto {
   @IsNumber()
   @IsNotEmpty()
   criadorId: number;
+
+  @IsNumber()
+  fornecedorId?: number;
 }

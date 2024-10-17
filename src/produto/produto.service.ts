@@ -1,28 +1,36 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { FornecedorService } from 'src/fornecedor/fornecedor.service';
+import { CreateMovimentacaoEstoqueDto } from 'src/movimentacao_estoque/dto/create-movimentacao_estoque.dto';
 import { PrismaService } from 'src/prisma.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
-import { CreateMovimentacaoEstoqueDto } from 'src/movimentacao_estoque/dto/create-movimentacao_estoque.dto';
+import { ProdutoFornecedorService } from 'src/produto_fornecedor/produto_fornecedor.service';
 
 @Injectable()
 export class ProdutoService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private fornecedor: FornecedorService,
+  ) {}
 
   criarProduto = async (createProdutoDto: CreateProdutoDto) => {
     try {
       const {
         descricao,
-        unMedida,
+        medidaId,
+        precoCompra,
         valorUn,
         categoriaId,
         criadorId,
         quantidade,
+        fornecedorId,
       } = createProdutoDto;
 
       const novoProduto = await this.prisma.produto.create({
         data: {
           descricao,
-          unMedida,
+          medidaId,
+          precoCompra,
           valorUn,
           categoriaId,
           criadorId,
@@ -40,14 +48,36 @@ export class ProdutoService {
         });
       }
 
+      if (fornecedorId) {
+        const fornecedor = await this.fornecedor.procurarUm(fornecedorId);
+
+        if (!fornecedor) {
+          throw new NotFoundException(
+            'Fornecedor não encontrado. É possível que o fornecedor não esteja cadastrado no sistema.',
+          );
+        }
+
+        await this.prisma.produtoFornecedor.create({
+          data: {
+            produtoId: novoProduto.id,
+            fornecedorId: fornecedorId,
+            precoCompra: precoCompra,
+            criadorId: criadorId,
+          },
+        });
+      }
+
       return novoProduto;
-    } catch (error) {}
+    } catch (error) {
+      throw new Error(error);
+    }
   };
 
   procurarTodos = async () => {
     return await this.prisma.produto.findMany({
       include: {
         categoria: true,
+        medida: true,
       },
     });
   };

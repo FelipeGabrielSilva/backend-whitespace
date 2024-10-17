@@ -13,6 +13,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { FormatCpfCnpjInterceptor } from './utils/cpf_cnpj_format.interceptor';
 import { MovimentacaoEstoqueModule } from './movimentacao_estoque/movimentacao_estoque.module';
 import { DateFormattingInterceptor } from './utils/date_format.interceptor';
+import { MedidaModule } from './medida/medida.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { DateFormattingInterceptor } from './utils/date_format.interceptor';
     MProdutoPedidoModule,
     ProdutoFornecedorModule,
     MovimentacaoEstoqueModule,
+    MedidaModule,
   ],
   controllers: [AppController],
   providers: [
