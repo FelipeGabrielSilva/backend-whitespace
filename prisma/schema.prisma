@@ -36,9 +36,11 @@ model Usuario {
   id           Int      @id @unique @default(autoincrement())
   nome         String   @db.VarChar(70)
   email        String   @unique @db.VarChar(70)
-  senha        String   @db.VarChar(30)
+  senha        String   @db.VarChar(100)
   criadoEm     DateTime @default(now())
   atualizadoEm DateTime @updatedAt
+
+  role String @default("user") 
 }
 
 model Produto {

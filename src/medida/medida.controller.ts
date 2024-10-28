@@ -6,10 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { MedidaService } from './medida.service';
 import { CreateMedidaDto } from './dto/create-medida.dto';
 import { UpdateMedidaDto } from './dto/update-medida.dto';
+import { Roles } from 'src/auth/role.decorator';
+import { JwtAuthGuard } from 'src/guards/jwt.guard';
+import { RolesGuard } from 'src/guards/role.guard';
 
 @Controller('medida')
 export class MedidaController {
@@ -35,6 +39,8 @@ export class MedidaController {
     return this.medidaService.update(+id, updateMedidaDto);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.medidaService.remove(+id);

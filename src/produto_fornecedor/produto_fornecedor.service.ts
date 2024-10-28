@@ -71,7 +71,7 @@ export class ProdutoFornecedorService {
       throw new NotFoundException('ProdutoFornecedor não encontrado');
     }
 
-     await this.prisma.produtoFornecedor.delete({
+    await this.prisma.produtoFornecedor.delete({
       where: { id },
     });
 

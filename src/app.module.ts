@@ -14,6 +14,7 @@ import { FormatCpfCnpjInterceptor } from './utils/cpf_cnpj_format.interceptor';
 import { MovimentacaoEstoqueModule } from './movimentacao_estoque/movimentacao_estoque.module';
 import { DateFormattingInterceptor } from './utils/date_format.interceptor';
 import { MedidaModule } from './medida/medida.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MedidaModule } from './medida/medida.module';
     ProdutoFornecedorModule,
     MovimentacaoEstoqueModule,
     MedidaModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

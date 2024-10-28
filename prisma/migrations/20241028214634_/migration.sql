@@ -38,9 +38,10 @@ CREATE TABLE `Usuario` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `nome` VARCHAR(70) NOT NULL,
     `email` VARCHAR(70) NOT NULL,
-    `senha` VARCHAR(30) NOT NULL,
+    `senha` VARCHAR(100) NOT NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `atualizadoEm` DATETIME(3) NOT NULL,
+    `role` VARCHAR(191) NOT NULL DEFAULT 'user',
 
     UNIQUE INDEX `Usuario_id_key`(`id`),
     UNIQUE INDEX `Usuario_email_key`(`email`),
@@ -68,6 +69,8 @@ CREATE TABLE `Produto` (
 CREATE TABLE `Medida` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `descricao` VARCHAR(191) NOT NULL,
+    `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `atualizadoEm` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Medida_id_key`(`id`),
     PRIMARY KEY (`id`)

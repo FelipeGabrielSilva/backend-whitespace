@@ -48,7 +48,7 @@ export class PedidoService {
 
   procurarTodos = async () => {
     return await this.prisma.pedido.findMany({
-      include: { cliente: true, produtos: true },
+      include: { cliente: true, produtos: { include: { produto: true } } },
     });
   };
 
