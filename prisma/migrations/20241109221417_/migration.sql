@@ -11,7 +11,6 @@ CREATE TABLE `Fornecedor` (
 
     UNIQUE INDEX `Fornecedor_id_key`(`id`),
     UNIQUE INDEX `Fornecedor_cnpj_key`(`cnpj`),
-    UNIQUE INDEX `Fornecedor_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -62,6 +61,7 @@ CREATE TABLE `Produto` (
     `medidaId` INTEGER NOT NULL,
 
     UNIQUE INDEX `Produto_id_key`(`id`),
+    UNIQUE INDEX `Produto_descricao_key`(`descricao`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -73,6 +73,7 @@ CREATE TABLE `Medida` (
     `atualizadoEm` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Medida_id_key`(`id`),
+    UNIQUE INDEX `Medida_descricao_key`(`descricao`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

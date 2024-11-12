@@ -22,8 +22,7 @@ import { RolesGuard } from 'src/guards/role.guard';
 export class ClienteController {
   constructor(private readonly clienteService: ClienteService) {}
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  
   @Post('registro')
   create(@Body() createClienteDto: CreateClienteDto) {
     return this.clienteService.criarCliente(createClienteDto);

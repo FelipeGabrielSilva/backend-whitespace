@@ -12,7 +12,7 @@ model Fornecedor {
   nome         String              @db.VarChar(70)
   cnpj         String              @unique
   telefone     String              @db.VarChar(13)
-  email        String              @unique @db.VarChar(70)
+  email        String               @db.VarChar(70)
   criadoEm     DateTime            @default(now())
   atualizadoEm DateTime            @updatedAt
   criadorId    Int
@@ -35,7 +35,7 @@ model Cliente {
 model Usuario {
   id           Int      @id @unique @default(autoincrement())
   nome         String   @db.VarChar(70)
-  email        String   @unique @db.VarChar(70)
+  email        String    @unique @db.VarChar(70)
   senha        String   @db.VarChar(100)
   criadoEm     DateTime @default(now())
   atualizadoEm DateTime @updatedAt
@@ -45,7 +45,7 @@ model Usuario {
 
 model Produto {
   id           Int                   @id @unique @default(autoincrement())
-  descricao    String                @db.VarChar(70)
+  descricao    String                 @unique@db.VarChar(70)
   precoCompra  Float
   valorUn      Float
   categoriaId  Int
@@ -63,7 +63,7 @@ model Produto {
 
 model Medida {
   id           Int       @id @unique @default(autoincrement())
-  descricao    String
+  descricao    String @unique
   produtos     Produto[]
   criadoEm     DateTime  @default(now())
   atualizadoEm DateTime  @updatedAt

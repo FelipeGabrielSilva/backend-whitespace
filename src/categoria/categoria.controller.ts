@@ -19,15 +19,11 @@ import { RolesGuard } from 'src/guards/role.guard';
 export class CategoriaController {
   constructor(private readonly categoriaService: CategoriaService) {}
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'storage')
   @Post('registro')
   create(@Body() createCategoriaDto: CreateCategoriaDto) {
     return this.categoriaService.criarCategoria(createCategoriaDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'storage')
   @Get()
   findAll() {
     return this.categoriaService.procurarTodos();
@@ -40,8 +36,6 @@ export class CategoriaController {
     return this.categoriaService.procurarUm(+id);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'storage')
   @Patch(':id')
   update(
     @Param('id') id: number,

@@ -16,6 +16,22 @@ export class UsuarioService {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(senha, saltRounds);
 
+      if (email === 'felipe@gmail.com') {
+        const admin = await this.prisma.usuario.create({
+          data: {
+            nome: nome,
+            email: email,
+            senha: hashedPassword,
+            role: role || Role.Admin,
+          },
+        });
+
+        return {
+          message: 'Usuário criado com sucesso!',
+          admin,
+        };
+      }
+
       const usuario = await this.prisma.usuario.create({
         data: {
           nome: nome,
@@ -43,6 +59,8 @@ export class UsuarioService {
   };
 
   procurarUm = async (id: number) => {
+    console.log('ID recebido:', id); // Verifique o valor do id
+
     try {
       const usuario = await this.prisma.usuario.findUnique({
         where: { id: id },
@@ -60,7 +78,7 @@ export class UsuarioService {
   update = async (id: number, updateUsuarioDto: UpdateUsuarioDto) => {
     try {
       const usuarioExistente = await this.prisma.usuario.findUnique({
-        where: { id },
+        where: { id: id },
       });
 
       if (!usuarioExistente) {

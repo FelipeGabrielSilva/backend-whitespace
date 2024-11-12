@@ -157,143 +157,7 @@ const medidas = [
   { descricao: 'Pacote', criadorId: 1 },
 ];
 
-const fornecedores = [
-  [
-    {
-      nome: 'Distribuidora A',
-      cnpj: '11.222.333/0001-00',
-      telefone: '11999998888',
-      email: 'vendas@distribuidoraa.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Distribuidora B',
-      cnpj: '55.666.777/0001-88',
-      telefone: '11988887777',
-      email: 'vendas@distribuidorab.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Fábrica C',
-      cnpj: '99.000.111/0001-99',
-      telefone: '21999990000',
-      email: 'contato@fabricc.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Comercial D',
-      cnpj: '44.555.666/0001-55',
-      telefone: '12987654321',
-      email: 'comercial@comerciald.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Indústria E',
-      cnpj: '77.888.999/0001-77',
-      telefone: '31988889999',
-      email: 'atendimento@industriae.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Magazine F',
-      cnpj: '22.333.444/0001-22',
-      telefone: '11976543210',
-      email: 'contato@magazinef.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Empresa G',
-      cnpj: '66.777.888/0001-66',
-      telefone: '19987654321',
-      email: 'vendas@empresag.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Loja H',
-      cnpj: '11.111.222/0001-11',
-      telefone: '11999991111',
-      email: 'loja@lojah.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Tecnologia I',
-      cnpj: '33.444.555/0001-33',
-      telefone: '41987654321',
-      email: 'contato@tecnologiai.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Importadora J',
-      cnpj: '88.999.000/0001-88',
-      telefone: '11976543210',
-      email: 'importacao@importadoraj.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Solução K',
-      cnpj: '22.222.333/0001-22',
-      telefone: '11999992222',
-      email: 'contato@solucaok.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Construções L',
-      cnpj: '55.555.666/0001-55',
-      telefone: '21987654321',
-      email: 'contato@construcoesl.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Indústria M',
-      cnpj: '99.111.222/0001-99',
-      telefone: '11988889999',
-      email: 'vendas@industriama.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Agência N',
-      cnpj: '77.777.888/0001-77',
-      telefone: '11976543210',
-      email: 'contato@agencian.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Comércio O',
-      cnpj: '33.333.444/0001-33',
-      telefone: '11999993333',
-      email: 'vendas@comercioo.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Serviços P',
-      cnpj: '44.444.555/0001-44',
-      telefone: '11987654321',
-      email: 'contato@servicosp.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Empresa Q',
-      cnpj: '88.888.999/0001-88',
-      telefone: '11976543210',
-      email: 'atendimento@empresaq.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Logística R',
-      cnpj: '11.111.333/0001-11',
-      telefone: '11999994444',
-      email: 'contato@logistica.com',
-      criadorId: 1,
-    },
-    {
-      nome: 'Tecnologia S',
-      cnpj: '66.666.777/0001-66',
-      telefone: '11987654321',
-      email: 'vendas@tecnologias.com',
-      criadorId: 1,
-    },
-  ],
-];
+
 
 const produtos = [
   {
@@ -304,7 +168,7 @@ const produtos = [
     categoriaId: 15, // Informática
     quantidade: 50,
     criadorId: 1,
-    fornecedorId: 2, // Distribuidora B
+    fornecedorId: 1 // Distribuidora B
   },
   {
     descricao: 'Notebook Dell Inspiron 15',
@@ -314,7 +178,7 @@ const produtos = [
     categoriaId: 15, // Informática
     quantidade: 30,
     criadorId: 1,
-    fornecedorId: 10, // Importadora J
+    fornecedorId: 1 // Importadora J
   },
   {
     descricao: 'Teclado Mecânico RGB',
@@ -324,7 +188,7 @@ const produtos = [
     categoriaId: 15, // Informática
     quantidade: 100,
     criadorId: 1,
-    fornecedorId: 9, // Tecnologia I
+    fornecedorId: 1 // Tecnologia I
   },
   {
     descricao: 'Mouse Gamer Sem Fio',
@@ -334,7 +198,7 @@ const produtos = [
     categoriaId: 15, // Informática
     quantidade: 150,
     criadorId: 1,
-    fornecedorId: 1, // Distribuidora A
+    fornecedorId: 1 // Distribuidora A
   },
   {
     descricao: 'Geladeira Duplex 450 Litros',
@@ -344,7 +208,7 @@ const produtos = [
     categoriaId: 2, // Eletrodoméstico
     quantidade: 20,
     criadorId: 1,
-    fornecedorId: 5, // Indústria E
+    fornecedorId: 1 // Indústria E
   },
   {
     descricao: 'Máquina de Lavar Roupa 12kg',
@@ -354,7 +218,7 @@ const produtos = [
     categoriaId: 2, // Eletrodoméstico
     quantidade: 30,
     criadorId: 1,
-    fornecedorId: 3, // Fábrica C
+    fornecedorId: 1 // Fábrica C
   },
   {
     descricao: 'Forno Elétrico 40 Litros',
@@ -364,7 +228,7 @@ const produtos = [
     categoriaId: 2, // Eletrodoméstico
     quantidade: 60,
     criadorId: 1,
-    fornecedorId: 7, // Empresa G
+    fornecedorId: 1 // Empresa G
   },
   {
     descricao: 'Micro-ondas 30 Litros',
@@ -374,7 +238,7 @@ const produtos = [
     categoriaId: 2, // Eletrodoméstico
     quantidade: 80,
     criadorId: 1,
-    fornecedorId: 4, // Comercial D
+    fornecedorId: 1 // Comercial D
   },
   {
     descricao: 'Cama Box Casal',
@@ -384,7 +248,7 @@ const produtos = [
     categoriaId: 3, // Móveis
     quantidade: 15,
     criadorId: 1,
-    fornecedorId: 12, // Construções L
+    fornecedorId: 1 // Construções L
   },
   {
     descricao: 'Sofá Retrátil 3 Lugares',
@@ -394,7 +258,7 @@ const produtos = [
     categoriaId: 3, // Móveis
     quantidade: 10,
     criadorId: 1,
-    fornecedorId: 6, // Magazine F
+    fornecedorId: 1 // Magazine F
   },
   {
     descricao: 'Mesa de Jantar 4 Cadeiras',
@@ -404,7 +268,7 @@ const produtos = [
     categoriaId: 3, // Móveis
     quantidade: 25,
     criadorId: 1,
-    fornecedorId: 13, // Indústria M
+    fornecedorId: 1 // Indústria M
   },
   {
     descricao: 'Cadeira de Escritório',
@@ -414,7 +278,7 @@ const produtos = [
     categoriaId: 3, // Móveis
     quantidade: 50,
     criadorId: 1,
-    fornecedorId: 8, // Loja H
+    fornecedorId: 1 // Loja H
   },
   {
     descricao: 'Camiseta Algodão',
@@ -424,7 +288,7 @@ const produtos = [
     categoriaId: 4, // Roupas
     quantidade: 200,
     criadorId: 1,
-    fornecedorId: 16, // Comércio O
+    fornecedorId: 1 // Comércio O
   },
   {
     descricao: 'Calça Jeans Masculina',
@@ -434,7 +298,7 @@ const produtos = [
     categoriaId: 4, // Roupas
     quantidade: 150,
     criadorId: 1,
-    fornecedorId: 15, // Agência N
+    fornecedorId: 1 // Agência N
   },
   {
     descricao: 'Vestido Floral',
@@ -444,7 +308,7 @@ const produtos = [
     categoriaId: 4, // Roupas
     quantidade: 100,
     criadorId: 1,
-    fornecedorId: 14, // Indústria M
+    fornecedorId: 1 // Indústria M
   },
   {
     descricao: 'Tênis Esportivo',
@@ -454,7 +318,7 @@ const produtos = [
     categoriaId: 4, // Roupas
     quantidade: 120,
     criadorId: 1,
-    fornecedorId: 11, // Solução K
+    fornecedorId: 1 // Solução K
   },
   {
     descricao: 'Arroz Branco 5kg',
@@ -464,7 +328,7 @@ const produtos = [
     categoriaId: 5, // Alimentos
     quantidade: 500,
     criadorId: 1,
-    fornecedorId: 17, // Serviços P
+    fornecedorId: 1 // Serviços P
   },
   {
     descricao: 'Feijão Carioca 1kg',
@@ -474,7 +338,7 @@ const produtos = [
     categoriaId: 5, // Alimentos
     quantidade: 400,
     criadorId: 1,
-    fornecedorId: 18, // Empresa Q
+    fornecedorId: 1 // Empresa Q
   },
   {
     descricao: 'Macarrão Espaguete 500g',
@@ -484,7 +348,7 @@ const produtos = [
     categoriaId: 5, // Alimentos
     quantidade: 300,
     criadorId: 1,
-    fornecedorId: 19, // Logística R
+    fornecedorId: 1 // Logística R
   },
   {
     descricao: 'Refrigerante Lata 350ml',
@@ -494,7 +358,7 @@ const produtos = [
     categoriaId: 6, // Bebidas
     quantidade: 1000,
     criadorId: 1,
-    fornecedorId: 20, // Tecnologia S
+    fornecedorId: 1 // Tecnologia S
   },
   {
     descricao: 'Suco de Laranja 1 Litro',
@@ -504,7 +368,7 @@ const produtos = [
     categoriaId: 6, // Bebidas
     quantidade: 800,
     criadorId: 1,
-    fornecedorId: 1, // Distribuidora A
+    fornecedorId: 1 // Distribuidora A
   },
   {
     descricao: 'Cerveja Long Neck',
@@ -514,7 +378,7 @@ const produtos = [
     categoriaId: 6, // Bebidas
     quantidade: 1500,
     criadorId: 1,
-    fornecedorId: 2, // Distribuidora B
+    fornecedorId: 1 // Distribuidora B
   },
 ];
 
@@ -549,19 +413,6 @@ async function main() {
     await prisma.medida.create({ data: medida });
   }
 
-  for (const fornecedor of fornecedores) {
-    const {nome, cnpj, telefone, email, criadorId} = fornecedor;
-
-    await prisma.fornecedor.create({
-      data: {
-        nome: nome,
-        cnpj: cnpj,
-        telefone: telefone,
-        email: email,
-        criadorId: criadorId,
-      },
-    });
-  }
 
   for (const produto of produtos) {
     await prisma.produto.create({ data: produto });
