@@ -3,46 +3,47 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
+  Put,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { ProdutoService } from './produto.service';
-import { CreateProdutoDto } from './dto/create-produto.dto';
-import { UpdateProdutoDto } from './dto/update-produto.dto';
-import { Roles } from 'src/auth/role.decorator';
-import { JwtAuthGuard } from 'src/guards/jwt.guard';
-import { RolesGuard } from 'src/guards/role.guard';
+import { Prisma } from '@prisma/client';
 
 @Controller('produto')
 export class ProdutoController {
   constructor(private readonly produtoService: ProdutoService) {}
 
-  @Post('registro')
-  create(@Body() createProdutoDto: CreateProdutoDto) {
-    return this.produtoService.criarProduto(createProdutoDto);
+  // **Create a new product**
+  @Post()
+  async create(@Body() data: Prisma.produtoCreateInput) {
+    return this.produtoService.create(data);
   }
 
+  // **Get all products**
   @Get()
-  findAll() {
-    return this.produtoService.procurarTodos();
+  async findAll() {
+    return this.produtoService.findAll();
   }
 
+  // **Get product by ID**
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.produtoService.procurarUm(+id);
+  async findOne(@Param('id') id: string) {
+    return this.produtoService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: number, @Body() updateProdutoDto: UpdateProdutoDto) {
-    return this.produtoService.update(+id, updateProdutoDto);
+  // **Update product by ID**
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() data: Prisma.produtoUpdateInput,
+  ) {
+    return this.produtoService.update(+id, data);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  // **Delete product by ID**
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  async remove(@Param('id') id: string) {
     return this.produtoService.remove(+id);
   }
 }

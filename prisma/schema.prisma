@@ -38,7 +38,7 @@ model fornecedor {
   criadoEm          DateTime            @default(now())
   atualizadoEm      DateTime
   criadorId         Int
-  produto           produto?
+  produto           produto[] // Removido o @unique aqui, já que um fornecedor pode ter vários produtos
   produtofornecedor produtofornecedor[]
 }
 
@@ -99,7 +99,7 @@ model produto {
   atualizadoEm        DateTime
   criadorId           Int
   medidaId            Int
-  fornecedorId        Int                   @unique
+  fornecedorId        Int
   itempedido          itempedido[]
   movimentacaoestoque movimentacaoestoque[]
   categoria           categoria             @relation(fields: [categoriaId], references: [id], map: "Produto_categoriaId_fkey")

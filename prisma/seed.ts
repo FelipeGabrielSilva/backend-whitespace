@@ -412,6 +412,28 @@ async function main() {
 
   // Tipos de usuários
 
+  // 1. Criar os usuários
+  for (const usuario of usuarios) {
+    const existingUser = await prisma.usuario.findUnique({
+      where: { email: usuario.email },
+    });
+
+    if (!existingUser) {
+      const senhaHash = await bcrypt.hash(usuario.senha, 10);
+
+      await prisma.usuario.create({
+        data: {
+          nome: usuario.nome,
+          email: usuario.email,
+          senha: senhaHash,
+          role: usuario.role,
+        },
+      });
+    } else {
+      console.log(`Usuário com email ${usuario.email} já existe.`);
+    }
+  }
+
   const adminUsers = await prisma.usuario.findMany({
     where: {
       role: Role.Admin,
@@ -443,28 +465,6 @@ async function main() {
   if (commomUsers.length === 0) {
     console.log('Nenhum usuário com a role USER encontrado.');
     return;
-  }
-
-  // 1. Criar os usuários
-  for (const usuario of usuarios) {
-    const existingUser = await prisma.usuario.findUnique({
-      where: { email: usuario.email },
-    });
-
-    if (!existingUser) {
-      const senhaHash = await bcrypt.hash(usuario.senha, 10);
-
-      await prisma.usuario.create({
-        data: {
-          nome: usuario.nome,
-          email: usuario.email,
-          senha: senhaHash,
-          role: usuario.role,
-        },
-      });
-    } else {
-      console.log(`Usuário com email ${usuario.email} já existe.`);
-    }
   }
 
   // 2. Criar as categorias
@@ -519,24 +519,23 @@ async function main() {
   }
 
   // 6. Criar os produtos
-  // 6. Criar os produtos
   for (const produto of produtos) {
-    const categoriaId = categoriasMap.get(produto.categoria); // Fix to use produto.categoria
-    const fornecedorId = fornecedoresMap.get(produto.fornecedor); // Fix to use produto.fornecedor
-    const medidaId = medidasMap.get(produto.medida); // Fix to use produto.medida
+    const categoriaId = categoriasMap.get(produto.categoria);
+    const fornecedorId = fornecedoresMap.get(produto.fornecedor);
+    const medidaId = medidasMap.get(produto.medida);
     const randomUser =
       commomUsers[Math.floor(Math.random() * commomUsers.length)];
 
     await prisma.produto.create({
       data: {
         descricao: produto.descricao,
-        medidaId: medidaId, // Pass the ID of medida
+        medidaId: medidaId,
         precoCompra: produto.precoCompra,
         valorUn: produto.valorUn,
-        categoriaId: categoriaId, // Pass the ID of categoria
         quantidade: produto.quantidade,
         criadorId: randomUser.id,
-        fornecedorId: fornecedorId, // Pass the ID of fornecedor instead of the object
+        fornecedorId: fornecedorId,
+        atualizadoEm: new Date(),
       },
     });
   }
