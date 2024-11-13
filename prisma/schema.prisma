@@ -9,7 +9,7 @@ datasource db {
 
 model categoria {
   id           Int       @id @unique(map: "Categoria_id_key") @default(autoincrement())
-  descricao    String    @unique(map: "Categoria_descricao_key") @db.VarChar(45)
+  descricao    String    @unique(map: "Categoria_descricao_key")
   criadoEm     DateTime  @default(now())
   atualizadoEm DateTime  @default(now())
   criadorId    Int
@@ -18,11 +18,11 @@ model categoria {
 
 model cliente {
   id           Int      @id @unique(map: "Cliente_id_key") @default(autoincrement())
-  nome         String   @db.VarChar(70)
-  cnpjCpf      String   @unique(map: "Cliente_cnpjCpf_key") @db.VarChar(20)
-  endereco     String   @db.VarChar(80)
-  telefone     String   @db.VarChar(13)
-  email        String   @unique(map: "Cliente_email_key") @db.VarChar(70)
+  nome         String
+  cnpjCpf      String   @unique(map: "Cliente_cnpjCpf_key")
+  endereco     String
+  telefone     String
+  email        String   @unique(map: "Cliente_email_key")
   criadorId    Int
   criadoEm     DateTime @default(now())
   atualizadoEm DateTime @default(now())
@@ -30,16 +30,15 @@ model cliente {
 }
 
 model fornecedor {
-  id                Int                 @id @unique(map: "Fornecedor_id_key") @default(autoincrement())
-  nome              String              @db.VarChar(70)
-  cnpj              String              @unique(map: "Fornecedor_cnpj_key")
-  telefone          String              @db.VarChar(13)
-  email             String              @db.VarChar(70)
-  criadoEm          DateTime            @default(now())
-  atualizadoEm      DateTime
-  criadorId         Int
-  produto           produto[] // Removido o @unique aqui, já que um fornecedor pode ter vários produtos
-  produtofornecedor produtofornecedor[]
+  id           Int       @id @unique(map: "Fornecedor_id_key") @default(autoincrement())
+  nome         String
+  cnpj         String    @unique(map: "Fornecedor_cnpj_key")
+  telefone     String
+  email        String
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime
+  criadorId    Int
+  produtos     produto[]
 }
 
 model itempedido {
@@ -49,8 +48,8 @@ model itempedido {
   valorTotal Float
   produtoId  Int
   pedidoId   Int
-  pedido     pedido   @relation(fields: [pedidoId], references: [id], map: "ItemPedido_pedidoId_fkey")
-  produto    produto  @relation(fields: [produtoId], references: [id], map: "ItemPedido_produtoId_fkey")
+  pedido     pedido   @relation(fields: [pedidoId], references: [id])
+  produto    produto  @relation(fields: [produtoId], references: [id])
 
   @@unique([produtoId, pedidoId], map: "ItemPedido_produtoId_pedidoId_key")
   @@index([pedidoId], map: "ItemPedido_pedidoId_fkey")
@@ -70,9 +69,9 @@ model movimentacaoestoque {
   tipo             movimentacaoestoque_tipo
   quantidade       Int
   dataMovimentacao DateTime                 @default(now())
-  observacao       String?                  @db.VarChar(255)
+  observacao       String?
   criadorId        Int
-  produto          produto                  @relation(fields: [produtoId], references: [id], map: "MovimentacaoEstoque_produtoId_fkey")
+  produto          produto                  @relation(fields: [produtoId], references: [id])
 
   @@index([produtoId], map: "MovimentacaoEstoque_produtoId_fkey")
 }
@@ -83,14 +82,14 @@ model pedido {
   clienteId  Int
   status     pedido_status @default(PENDENTE)
   itempedido itempedido[]
-  cliente    cliente       @relation(fields: [clienteId], references: [id], map: "Pedido_clienteId_fkey")
+  cliente    cliente       @relation(fields: [clienteId], references: [id])
 
   @@index([clienteId], map: "Pedido_clienteId_fkey")
 }
 
 model produto {
   id                  Int                   @id @unique(map: "Produto_id_key") @default(autoincrement())
-  descricao           String                @unique(map: "Produto_descricao_key") @db.VarChar(70)
+  descricao           String                @unique(map: "Produto_descricao_key")
   precoCompra         Float
   valorUn             Float
   categoriaId         Int
@@ -102,35 +101,20 @@ model produto {
   fornecedorId        Int
   itempedido          itempedido[]
   movimentacaoestoque movimentacaoestoque[]
-  categoria           categoria             @relation(fields: [categoriaId], references: [id], map: "Produto_categoriaId_fkey")
-  medida              medida                @relation(fields: [medidaId], references: [id], map: "Produto_medidaId_fkey")
+  categoria           categoria             @relation(fields: [categoriaId], references: [id])
   fornecedor          fornecedor            @relation(fields: [fornecedorId], references: [id])
-  produtofornecedor   produtofornecedor[]
+  medida              medida                @relation(fields: [medidaId], references: [id])
 
   @@index([categoriaId], map: "Produto_categoriaId_fkey")
   @@index([medidaId], map: "Produto_medidaId_fkey")
-}
-
-model produtofornecedor {
-  id           Int        @id @unique(map: "ProdutoFornecedor_id_key") @default(autoincrement())
-  produtoId    Int
-  fornecedorId Int
-  precoCompra  Float
-  criadoEm     DateTime   @default(now())
-  atualizadoEm DateTime   @default(now())
-  criadorId    Int
-  fornecedor   fornecedor @relation(fields: [fornecedorId], references: [id], map: "ProdutoFornecedor_fornecedorId_fkey")
-  produto      produto    @relation(fields: [produtoId], references: [id], map: "ProdutoFornecedor_produtoId_fkey")
-
-  @@index([fornecedorId], map: "ProdutoFornecedor_fornecedorId_fkey")
-  @@index([produtoId], map: "ProdutoFornecedor_produtoId_fkey")
+  @@index([fornecedorId], map: "Produto_fornecedorId_fkey")
 }
 
 model usuario {
   id           Int      @id @unique(map: "Usuario_id_key") @default(autoincrement())
-  nome         String   @db.VarChar(70)
-  email        String   @unique(map: "Usuario_email_key") @db.VarChar(70)
-  senha        String   @db.VarChar(100)
+  nome         String
+  email        String   @unique(map: "Usuario_email_key")
+  senha        String
   criadoEm     DateTime @default(now())
   atualizadoEm DateTime @default(now())
   role         String   @default("user")

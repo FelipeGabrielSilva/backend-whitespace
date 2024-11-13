@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE `categoria` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `descricao` VARCHAR(45) NOT NULL,
+    `descricao` VARCHAR(191) NOT NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `atualizadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `criadorId` INTEGER NOT NULL,
@@ -14,11 +14,11 @@ CREATE TABLE `categoria` (
 -- CreateTable
 CREATE TABLE `cliente` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `nome` VARCHAR(70) NOT NULL,
-    `cnpjCpf` VARCHAR(20) NOT NULL,
-    `endereco` VARCHAR(80) NOT NULL,
-    `telefone` VARCHAR(13) NOT NULL,
-    `email` VARCHAR(70) NOT NULL,
+    `nome` VARCHAR(191) NOT NULL,
+    `cnpjCpf` VARCHAR(191) NOT NULL,
+    `endereco` VARCHAR(191) NOT NULL,
+    `telefone` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
     `criadorId` INTEGER NOT NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `atualizadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -32,10 +32,10 @@ CREATE TABLE `cliente` (
 -- CreateTable
 CREATE TABLE `fornecedor` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `nome` VARCHAR(70) NOT NULL,
+    `nome` VARCHAR(191) NOT NULL,
     `cnpj` VARCHAR(191) NOT NULL,
-    `telefone` VARCHAR(13) NOT NULL,
-    `email` VARCHAR(70) NOT NULL,
+    `telefone` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `atualizadoEm` DATETIME(3) NOT NULL,
     `criadorId` INTEGER NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE `movimentacaoestoque` (
     `tipo` ENUM('ENTRADA', 'SAIDA') NOT NULL,
     `quantidade` INTEGER NOT NULL,
     `dataMovimentacao` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `observacao` VARCHAR(255) NULL,
+    `observacao` VARCHAR(191) NULL,
     `criadorId` INTEGER NOT NULL,
 
     UNIQUE INDEX `MovimentacaoEstoque_id_key`(`id`),
@@ -102,7 +102,7 @@ CREATE TABLE `pedido` (
 -- CreateTable
 CREATE TABLE `produto` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `descricao` VARCHAR(70) NOT NULL,
+    `descricao` VARCHAR(191) NOT NULL,
     `precoCompra` DOUBLE NOT NULL,
     `valorUn` DOUBLE NOT NULL,
     `categoriaId` INTEGER NOT NULL,
@@ -117,31 +117,16 @@ CREATE TABLE `produto` (
     UNIQUE INDEX `Produto_descricao_key`(`descricao`),
     INDEX `Produto_categoriaId_fkey`(`categoriaId`),
     INDEX `Produto_medidaId_fkey`(`medidaId`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `produtofornecedor` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `produtoId` INTEGER NOT NULL,
-    `fornecedorId` INTEGER NOT NULL,
-    `precoCompra` DOUBLE NOT NULL,
-    `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `atualizadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `criadorId` INTEGER NOT NULL,
-
-    UNIQUE INDEX `ProdutoFornecedor_id_key`(`id`),
-    INDEX `ProdutoFornecedor_fornecedorId_fkey`(`fornecedorId`),
-    INDEX `ProdutoFornecedor_produtoId_fkey`(`produtoId`),
+    INDEX `Produto_fornecedorId_fkey`(`fornecedorId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `usuario` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `nome` VARCHAR(70) NOT NULL,
-    `email` VARCHAR(70) NOT NULL,
-    `senha` VARCHAR(100) NOT NULL,
+    `nome` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `senha` VARCHAR(191) NOT NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `atualizadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `role` VARCHAR(191) NOT NULL DEFAULT 'user',
@@ -152,28 +137,22 @@ CREATE TABLE `usuario` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `itempedido` ADD CONSTRAINT `ItemPedido_pedidoId_fkey` FOREIGN KEY (`pedidoId`) REFERENCES `pedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `itempedido` ADD CONSTRAINT `itempedido_pedidoId_fkey` FOREIGN KEY (`pedidoId`) REFERENCES `pedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `itempedido` ADD CONSTRAINT `ItemPedido_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `produto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `itempedido` ADD CONSTRAINT `itempedido_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `produto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `movimentacaoestoque` ADD CONSTRAINT `MovimentacaoEstoque_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `produto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `movimentacaoestoque` ADD CONSTRAINT `movimentacaoestoque_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `produto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `pedido` ADD CONSTRAINT `Pedido_clienteId_fkey` FOREIGN KEY (`clienteId`) REFERENCES `cliente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `pedido` ADD CONSTRAINT `pedido_clienteId_fkey` FOREIGN KEY (`clienteId`) REFERENCES `cliente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `produto` ADD CONSTRAINT `Produto_categoriaId_fkey` FOREIGN KEY (`categoriaId`) REFERENCES `categoria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `produto` ADD CONSTRAINT `produto_categoriaId_fkey` FOREIGN KEY (`categoriaId`) REFERENCES `categoria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `produto` ADD CONSTRAINT `Produto_medidaId_fkey` FOREIGN KEY (`medidaId`) REFERENCES `medida`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `produto` ADD CONSTRAINT `produto_medidaId_fkey` FOREIGN KEY (`medidaId`) REFERENCES `medida`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `produto` ADD CONSTRAINT `produto_fornecedorId_fkey` FOREIGN KEY (`fornecedorId`) REFERENCES `fornecedor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `produtofornecedor` ADD CONSTRAINT `ProdutoFornecedor_fornecedorId_fkey` FOREIGN KEY (`fornecedorId`) REFERENCES `fornecedor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `produtofornecedor` ADD CONSTRAINT `ProdutoFornecedor_produtoId_fkey` FOREIGN KEY (`produtoId`) REFERENCES `produto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

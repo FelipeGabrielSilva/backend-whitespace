@@ -474,14 +474,26 @@ async function main() {
     const randomUser =
       storageUsers[Math.floor(Math.random() * storageUsers.length)];
 
-    const createdCategoria = await prisma.categoria.create({
-      data: {
-        descricao: categoria.descricao,
-        criadorId: randomUser.id,
-      },
+    // Verificar se a categoria já existe
+    const existingCategoria = await prisma.categoria.findUnique({
+      where: { descricao: categoria.descricao },
     });
 
-    categoriasMap.set(categoria.descricao, createdCategoria.id);
+    if (!existingCategoria) {
+      const createdCategoria = await prisma.categoria.create({
+        data: {
+          descricao: categoria.descricao,
+          criadorId: randomUser.id,
+        },
+      });
+
+      // Adiciona a categoria criada ao mapa
+      categoriasMap.set(categoria.descricao, createdCategoria.id);
+    } else {
+      // Caso já exista, apenas registra no mapa a categoria existente
+      categoriasMap.set(categoria.descricao, existingCategoria.id);
+      console.log(`Categoria "${categoria.descricao}" já existe.`);
+    }
   }
 
   // 4. Criar as medidas
@@ -520,7 +532,7 @@ async function main() {
 
   // 6. Criar os produtos
   for (const produto of produtos) {
-    const categoriaId = categoriasMap.get(produto.categoria);
+    const categoriaId = categoriasMap.get(produto.categoria); // Já possui o ID da categoria
     const fornecedorId = fornecedoresMap.get(produto.fornecedor);
     const medidaId = medidasMap.get(produto.medida);
     const randomUser =
@@ -534,12 +546,13 @@ async function main() {
         valorUn: produto.valorUn,
         quantidade: produto.quantidade,
         criadorId: randomUser.id,
-        fornecedorId: fornecedorId,
+        fornecedorId: fornecedorId, // Corrigido para usar fornecedorId (campo correto)
         atualizadoEm: new Date(),
+        categoriaId: categoriaId, // Usar categoriaId corretamente
       },
     });
   }
-
+  // Criar clientes
   for (const cliente of clientes) {
     const randomUser =
       adminUsers[Math.floor(Math.random() * adminUsers.length)];

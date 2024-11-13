@@ -10,7 +10,6 @@ import { MProdutoPedidoModule } from './item_pedido/item_pedido.module';
 import { MedidaModule } from './medida/medida.module';
 import { MovimentacaoEstoqueModule } from './movimentacao_estoque/movimentacao_estoque.module';
 import { PedidoModule } from './pedido/pedido.module';
-import { ProdutoFornecedorModule } from './produto_fornecedor/produto_fornecedor.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { FormatCpfCnpjInterceptor } from './utils/cpf_cnpj_format.interceptor';
 import { DateFormattingInterceptor } from './utils/date_format.interceptor';
@@ -23,7 +22,6 @@ import { DateFormattingInterceptor } from './utils/date_format.interceptor';
     PedidoModule,
     ClienteModule,
     MProdutoPedidoModule,
-    ProdutoFornecedorModule,
     MovimentacaoEstoqueModule,
     MedidaModule,
     AuthModule,
