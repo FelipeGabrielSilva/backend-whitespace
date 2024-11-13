@@ -48,7 +48,7 @@ export class PedidoService {
 
   procurarTodos = async () => {
     return await this.prisma.pedido.findMany({
-      include: { cliente: true, produtos: { include: { produto: true } } },
+      include: { cliente: true },
     });
   };
 
@@ -56,7 +56,7 @@ export class PedidoService {
     try {
       const encontrado = await this.prisma.pedido.findUnique({
         where: { id },
-        include: { cliente: true, produtos: true },
+        include: { cliente: true },
       });
 
       if (encontrado) {

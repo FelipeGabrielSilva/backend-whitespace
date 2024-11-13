@@ -1,7 +1,7 @@
-import { StatusPedido } from '@prisma/client';
+import { pedido_status } from '@prisma/client';
 import { IsEnum } from 'class-validator';
 
 export class UpdatePedidoDto {
-  @IsEnum(StatusPedido)
-  status: StatusPedido;
+  @IsEnum(pedido_status)
+  status: pedido_status;
 }

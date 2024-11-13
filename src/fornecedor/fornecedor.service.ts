@@ -22,10 +22,11 @@ export class FornecedorService {
       const novoFornecedor = await this.prisma.fornecedor.create({
         data: {
           nome,
-          cnpj: cnpj,
+          cnpj,
           telefone,
           email,
           criadorId,
+          atualizadoEm: new Date(),
         },
       });
 

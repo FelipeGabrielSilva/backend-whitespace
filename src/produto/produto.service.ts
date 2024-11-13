@@ -57,7 +57,7 @@ export class ProdutoService {
           );
         }
 
-        await this.prisma.produtoFornecedor.create({
+        await this.prisma.produtofornecedor.create({
           data: {
             produtoId: novoProduto.id,
             fornecedorId: fornecedorId,
@@ -147,7 +147,7 @@ export class ProdutoService {
         );
       }
 
-      const novaMovimentacao = await this.prisma.movimentacaoEstoque.create({
+      const novaMovimentacao = await this.prisma.movimentacaoestoque.create({
         data: {
           tipo: movimentacaoDto.tipo,
           quantidade: movimentacaoDto.quantidade,

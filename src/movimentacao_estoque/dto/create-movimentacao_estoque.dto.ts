@@ -5,14 +5,14 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { TipoMovimentacao } from '@prisma/client';
+import { movimentacaoestoque_tipo } from '@prisma/client';
 
 export class CreateMovimentacaoEstoqueDto {
   @IsInt()
   produtoId: number;
 
-  @IsEnum(TipoMovimentacao)
-  tipo: TipoMovimentacao;
+  @IsEnum(movimentacaoestoque_tipo)
+  tipo: movimentacaoestoque_tipo;
 
   @IsInt()
   quantidade: number;

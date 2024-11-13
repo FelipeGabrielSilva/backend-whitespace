@@ -10,7 +10,7 @@ export class ProdutoFornecedorService {
   criarProdutoFornecedor = async (createDto: CreateProdutoFornecedorDto) => {
     const { produtoId, fornecedorId, precoCompra, criadorId } = createDto;
 
-    const novoProdutoFornecedor = await this.prisma.produtoFornecedor.create({
+    const novoProdutoFornecedor = await this.prisma.produtofornecedor.create({
       data: {
         produtoId,
         fornecedorId,
@@ -23,7 +23,7 @@ export class ProdutoFornecedorService {
   };
 
   procurarTodos = async () => {
-    return await this.prisma.produtoFornecedor.findMany({
+    return await this.prisma.produtofornecedor.findMany({
       include: {
         produto: true,
         fornecedor: true,
@@ -32,7 +32,7 @@ export class ProdutoFornecedorService {
   };
 
   procurarUm = async (id: number) => {
-    const produtoFornecedor = await this.prisma.produtoFornecedor.findUnique({
+    const produtoFornecedor = await this.prisma.produtofornecedor.findUnique({
       where: { id },
       include: {
         produto: true,
@@ -48,7 +48,7 @@ export class ProdutoFornecedorService {
   };
 
   update = async (id: number, updateDto: UpdateProdutoFornecedorDto) => {
-    const produtoFornecedor = await this.prisma.produtoFornecedor.findUnique({
+    const produtoFornecedor = await this.prisma.produtofornecedor.findUnique({
       where: { id },
     });
 
@@ -56,14 +56,14 @@ export class ProdutoFornecedorService {
       throw new NotFoundException('ProdutoFornecedor não encontrado');
     }
 
-    return await this.prisma.produtoFornecedor.update({
+    return await this.prisma.produtofornecedor.update({
       where: { id },
       data: updateDto,
     });
   };
 
   remove = async (id: number) => {
-    const produtoFornecedor = await this.prisma.produtoFornecedor.findUnique({
+    const produtoFornecedor = await this.prisma.produtofornecedor.findUnique({
       where: { id },
     });
 
@@ -71,7 +71,7 @@ export class ProdutoFornecedorService {
       throw new NotFoundException('ProdutoFornecedor não encontrado');
     }
 
-    await this.prisma.produtoFornecedor.delete({
+    await this.prisma.produtofornecedor.delete({
       where: { id },
     });
 

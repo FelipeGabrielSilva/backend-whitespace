@@ -6,7 +6,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ItemPedido } from '@prisma/client';
+import { itempedido } from '@prisma/client';
 
 @Injectable()
 export class ItemPedidoService {
@@ -15,7 +15,7 @@ export class ItemPedidoService {
   criarItemPedido = async (
     createItemPedidoDto: CreateItemPedidoDto,
     pedidoId: number,
-  ): Promise<ItemPedido> => {
+  ): Promise<itempedido> => {
     const { quantidade, produtoId } = createItemPedidoDto;
 
     const produto = await this.prisma.produto.findUnique({
@@ -34,7 +34,7 @@ export class ItemPedidoService {
 
     const valorTotal = produto.valorUn * quantidade;
 
-    const novoItemPedido = await this.prisma.itemPedido.create({
+    const novoItemPedido = await this.prisma.itempedido.create({
       data: {
         quantidade: quantidade,
         valorTotal: valorTotal,
@@ -46,8 +46,8 @@ export class ItemPedidoService {
     return novoItemPedido;
   };
 
-  procurarTodos = async (): Promise<ItemPedido[]> => {
-    return this.prisma.itemPedido.findMany({
+  procurarTodos = async (): Promise<itempedido[]> => {
+    return this.prisma.itempedido.findMany({
       include: {
         produto: true,
         pedido: true,
@@ -55,8 +55,8 @@ export class ItemPedidoService {
     });
   };
 
-  procurarUm = async (id: number): Promise<ItemPedido> => {
-    const itemPedido = await this.prisma.itemPedido.findUnique({
+  procurarUm = async (id: number): Promise<itempedido> => {
+    const itemPedido = await this.prisma.itempedido.findUnique({
       where: { id },
       include: {
         produto: true,
@@ -76,8 +76,8 @@ export class ItemPedidoService {
   update = async (
     id: number,
     updateItemProdutoDto: UpdateItemPedidoDto,
-  ): Promise<ItemPedido> => {
-    const itemPedidoExistente = await this.prisma.itemPedido.findUnique({
+  ): Promise<itempedido> => {
+    const itemPedidoExistente = await this.prisma.itempedido.findUnique({
       where: { id },
     });
 
@@ -87,14 +87,14 @@ export class ItemPedidoService {
       );
     }
 
-    return this.prisma.itemPedido.update({
+    return this.prisma.itempedido.update({
       where: { id },
       data: updateItemProdutoDto,
     });
   };
 
   remove = async (id: number) => {
-    const itemPedidoExistente = await this.prisma.itemPedido.findUnique({
+    const itemPedidoExistente = await this.prisma.itempedido.findUnique({
       where: { id },
     });
 
@@ -104,7 +104,7 @@ export class ItemPedidoService {
       );
     }
 
-    await this.prisma.itemPedido.delete({
+    await this.prisma.itempedido.delete({
       where: { id },
     });
 

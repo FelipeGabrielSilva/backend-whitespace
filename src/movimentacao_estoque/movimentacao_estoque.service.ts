@@ -21,7 +21,7 @@ export class MovimentacaoEstoqueService {
         );
       }
 
-      const movimentacao = await this.prisma.movimentacaoEstoque.create({
+      const movimentacao = await this.prisma.movimentacaoestoque.create({
         data: {
           ...restoData,
           produto: { connect: { id: produtoId } },
@@ -46,14 +46,14 @@ export class MovimentacaoEstoqueService {
   };
 
   procurarTodos = async () => {
-    return this.prisma.movimentacaoEstoque.findMany({
+    return this.prisma.movimentacaoestoque.findMany({
       include: { produto: true },
     });
   };
 
   procurarUm = async (id: number) => {
     try {
-      const encontrado = await this.prisma.movimentacaoEstoque.findUnique({
+      const encontrado = await this.prisma.movimentacaoestoque.findUnique({
         where: { id },
         include: { produto: true },
       });
@@ -78,7 +78,7 @@ export class MovimentacaoEstoqueService {
     updateMovimentacaoDto: UpdateMovimentacaoEstoqueDto,
   ) => {
     try {
-      const encontrado = await this.prisma.movimentacaoEstoque.findUnique({
+      const encontrado = await this.prisma.movimentacaoestoque.findUnique({
         where: { id },
       });
 
@@ -89,7 +89,7 @@ export class MovimentacaoEstoqueService {
       }
 
       const movimentacaoAtualizada =
-        await this.prisma.movimentacaoEstoque.update({
+        await this.prisma.movimentacaoestoque.update({
           where: { id: encontrado.id },
           data: updateMovimentacaoDto,
         });
@@ -102,7 +102,7 @@ export class MovimentacaoEstoqueService {
 
   remove = async (id: number) => {
     try {
-      await this.prisma.movimentacaoEstoque.delete({ where: { id } });
+      await this.prisma.movimentacaoestoque.delete({ where: { id } });
 
       return `Movimentação com ID ${id} removida com sucesso.`;
     } catch (error) {
