@@ -20,21 +20,25 @@ import { RolesGuard } from 'src/guards/role.guard';
 export class PedidoController {
   constructor(private readonly pedidoService: PedidoService) {}
 
+  @Roles('admin')
   @Post('registro')
   criar(@Body() createPedidoDto: CreatePedidoDto) {
     return this.pedidoService.criarPedido(createPedidoDto);
   }
 
+  @Roles('admin, storage')
   @Get()
   procurarTodos() {
     return this.pedidoService.procurarTodos();
   }
 
+  @Roles('admin, storage')
   @Get(':id')
   procurarUm(@Param('id', ParseIntPipe) id: number) {
     return this.pedidoService.procurarUm(id);
   }
 
+  @Roles('admin')
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -43,7 +47,6 @@ export class PedidoController {
     return this.pedidoService.update(id, updatePedidoDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {

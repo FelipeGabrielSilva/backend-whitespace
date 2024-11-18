@@ -64,18 +64,19 @@ export class ProdutoService {
   };
 
   procurarTodos = async () => {
-    return await this.prisma.produto.findMany({
+    const produtos = await this.prisma.produto.findMany({
       include: {
         categoria: true,
         medida: true,
       },
     });
+    return produtos;
   };
 
-  procurarUm = async (id: number) => {
+  procurarUm = async (idProd: number) => {
     try {
       const encontrado = await this.prisma.produto.findUnique({
-        where: { id: id },
+        where: { id: idProd },
       });
 
       if (encontrado) {
@@ -84,7 +85,7 @@ export class ProdutoService {
           encontrado,
         };
       } else {
-        throw new NotFoundException(`Produto com ID ${id} não encontrado.`);
+        throw new NotFoundException(`Produto com ID ${idProd} não encontrado.`);
       }
     } catch (error) {
       throw new Error(`Erro ao procurar produto: ${error.message}`);

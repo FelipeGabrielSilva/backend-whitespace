@@ -47,9 +47,22 @@ export class PedidoService {
   }
 
   procurarTodos = async () => {
-    return await this.prisma.pedido.findMany({
-      include: { cliente: true },
+    const pedidos = await this.prisma.pedido.findMany({
+      include: {
+        itempedido: {
+          include: { produto: true },
+        },
+        cliente: true,
+      },
     });
+
+    return pedidos.map((pedido) => ({
+      ...pedido,
+      valorTotalPedido: pedido.itempedido.reduce(
+        (total, item) => total + item.valorTotal,
+        0,
+      ),
+    }));
   };
 
   procurarUm = async (id: number) => {

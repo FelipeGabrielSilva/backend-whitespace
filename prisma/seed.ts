@@ -410,7 +410,6 @@ async function main() {
     },
   ];
 
-  // Tipos de usuários
 
   // 1. Criar os usuários
   for (const usuario of usuarios) {
@@ -474,7 +473,6 @@ async function main() {
     const randomUser =
       storageUsers[Math.floor(Math.random() * storageUsers.length)];
 
-    // Verificar se a categoria já existe
     const existingCategoria = await prisma.categoria.findUnique({
       where: { descricao: categoria.descricao },
     });
@@ -487,10 +485,9 @@ async function main() {
         },
       });
 
-      // Adiciona a categoria criada ao mapa
       categoriasMap.set(categoria.descricao, createdCategoria.id);
     } else {
-      // Caso já exista, apenas registra no mapa a categoria existente
+
       categoriasMap.set(categoria.descricao, existingCategoria.id);
       console.log(`Categoria "${categoria.descricao}" já existe.`);
     }
@@ -530,29 +527,39 @@ async function main() {
     fornecedoresMap.set(fornecedor.nome, createdFornecedor.id);
   }
 
-  // 6. Criar os produtos
-  for (const produto of produtos) {
-    const categoriaId = categoriasMap.get(produto.categoria); // Já possui o ID da categoria
-    const fornecedorId = fornecedoresMap.get(produto.fornecedor);
-    const medidaId = medidasMap.get(produto.medida);
+  // 5. Criar os produtos e movimentações de estoque
+  for (const produtoData of produtos) {
+    const categoriaId = categoriasMap.get(produtoData.categoria);
+    const fornecedorId = fornecedoresMap.get(produtoData.fornecedor);
+    const medidaId = medidasMap.get(produtoData.medida);
     const randomUser =
       commomUsers[Math.floor(Math.random() * commomUsers.length)];
 
-    await prisma.produto.create({
+    const createdProduto = await prisma.produto.create({
       data: {
-        descricao: produto.descricao,
+        descricao: produtoData.descricao,
         medidaId: medidaId,
-        precoCompra: produto.precoCompra,
-        valorUn: produto.valorUn,
-        quantidade: produto.quantidade,
+        precoCompra: produtoData.precoCompra,
+        valorUn: produtoData.valorUn,
+        quantidade: produtoData.quantidade,
         criadorId: randomUser.id,
-        fornecedorId: fornecedorId, // Corrigido para usar fornecedorId (campo correto)
+        fornecedorId: fornecedorId,
+        categoriaId: categoriaId,
         atualizadoEm: new Date(),
-        categoriaId: categoriaId, // Usar categoriaId corretamente
+      },
+    });
+
+    await prisma.movimentacaoestoque.create({
+      data: {
+        produtoId: createdProduto.id,
+        quantidade: produtoData.quantidade,
+        tipo: 'ENTRADA',
+        criadorId: randomUser.id,
       },
     });
   }
-  // Criar clientes
+
+  // 7. Criar clientes
   for (const cliente of clientes) {
     const randomUser =
       adminUsers[Math.floor(Math.random() * adminUsers.length)];

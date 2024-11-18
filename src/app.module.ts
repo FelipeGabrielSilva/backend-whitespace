@@ -13,6 +13,7 @@ import { PedidoModule } from './pedido/pedido.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { FormatCpfCnpjInterceptor } from './utils/cpf_cnpj_format.interceptor';
 import { DateFormattingInterceptor } from './utils/date_format.interceptor';
+import { ProdutoModule } from './produto/produto.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { DateFormattingInterceptor } from './utils/date_format.interceptor';
     MovimentacaoEstoqueModule,
     MedidaModule,
     AuthModule,
+    ProdutoModule,
   ],
   controllers: [AppController],
   providers: [

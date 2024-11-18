@@ -152,7 +152,7 @@ ALTER TABLE `pedido` ADD CONSTRAINT `pedido_clienteId_fkey` FOREIGN KEY (`client
 ALTER TABLE `produto` ADD CONSTRAINT `produto_categoriaId_fkey` FOREIGN KEY (`categoriaId`) REFERENCES `categoria`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `produto` ADD CONSTRAINT `produto_medidaId_fkey` FOREIGN KEY (`medidaId`) REFERENCES `medida`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `produto` ADD CONSTRAINT `produto_fornecedorId_fkey` FOREIGN KEY (`fornecedorId`) REFERENCES `fornecedor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `produto` ADD CONSTRAINT `produto_fornecedorId_fkey` FOREIGN KEY (`fornecedorId`) REFERENCES `fornecedor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `produto` ADD CONSTRAINT `produto_medidaId_fkey` FOREIGN KEY (`medidaId`) REFERENCES `medida`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

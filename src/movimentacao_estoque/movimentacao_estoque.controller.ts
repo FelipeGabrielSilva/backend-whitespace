@@ -20,16 +20,19 @@ export class MovimentacaoEstoqueController {
     private readonly movimentacaoEstoqueService: MovimentacaoEstoqueService,
   ) {}
 
+  @Roles('admin')
   @Get()
   procurarTodos() {
     return this.movimentacaoEstoqueService.procurarTodos();
   }
 
+  @Roles('admin')
   @Get(':id')
   procurarUm(@Param('id', ParseIntPipe) id: number) {
     return this.movimentacaoEstoqueService.procurarUm(id);
   }
 
+  @Roles('admin')
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -38,7 +41,6 @@ export class MovimentacaoEstoqueController {
     return this.movimentacaoEstoqueService.update(id, updateMovimentacaoDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {

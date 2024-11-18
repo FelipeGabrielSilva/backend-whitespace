@@ -7,11 +7,9 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { Roles } from 'src/auth/role.decorator';
-import { JwtAuthGuard } from 'src/guards/jwt.guard';
-import { RolesGuard } from 'src/guards/role.guard';
+import { Role } from 'src/auth/role.enum';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { UsuarioService } from './usuario.service';
@@ -25,8 +23,8 @@ export class UsuarioController {
     return this.usuarioService.criarUsuario(createUsuarioDto);
   }
 
+  @Roles(Role.Admin)
   @Get()
-  @Roles('admin')
   findAll() {
     return this.usuarioService.procurarTodos();
   }
@@ -36,13 +34,13 @@ export class UsuarioController {
     return this.usuarioService.procurarUm(+id);
   }
 
+  @Roles(Role.Admin)
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateUsuarioDto: UpdateUsuarioDto) {
     return this.usuarioService.update(+id, updateUsuarioDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('user')
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.usuarioService.remove(+id);

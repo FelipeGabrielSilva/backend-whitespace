@@ -1,45 +1,45 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { MedidaService } from './medida.service';
+import { Roles } from 'src/auth/role.decorator';
 import { CreateMedidaDto } from './dto/create-medida.dto';
 import { UpdateMedidaDto } from './dto/update-medida.dto';
-import { Roles } from 'src/auth/role.decorator';
-import { JwtAuthGuard } from 'src/guards/jwt.guard';
-import { RolesGuard } from 'src/guards/role.guard';
+import { MedidaService } from './medida.service';
 
 @Controller('medida')
 export class MedidaController {
   constructor(private readonly medidaService: MedidaService) {}
 
+  @Roles('admin, storage')
   @Post('registro')
   create(@Body() createMedidaDto: CreateMedidaDto) {
     return this.medidaService.criarMedida(createMedidaDto);
   }
 
+  @Roles('admin, storage')
   @Get()
   findAll() {
     return this.medidaService.procurarTodas();
   }
 
+  @Roles('admin, storage')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.medidaService.procurarUma(+id);
   }
 
+  @Roles('admin')
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMedidaDto: UpdateMedidaDto) {
     return this.medidaService.update(+id, updateMedidaDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Delete(':id')
   remove(@Param('id') id: string) {

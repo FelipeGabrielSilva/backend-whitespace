@@ -1,41 +1,41 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
+import { Roles } from 'src/auth/role.decorator';
 import { CategoriaService } from './categoria.service';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
-import { Roles } from 'src/auth/role.decorator';
-import { JwtAuthGuard } from 'src/guards/jwt.guard';
-import { RolesGuard } from 'src/guards/role.guard';
+import { Role } from 'src/auth/role.enum';
 
 @Controller('categoria')
 export class CategoriaController {
   constructor(private readonly categoriaService: CategoriaService) {}
 
+  @Roles(Role.Admin, Role.Storage)
   @Post('registro')
   create(@Body() createCategoriaDto: CreateCategoriaDto) {
     return this.categoriaService.criarCategoria(createCategoriaDto);
   }
 
+  @Roles(Role.Admin, Role.Storage)
   @Get()
   findAll() {
     return this.categoriaService.procurarTodos();
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'storage')
+  @Roles(Role.Admin, Role.Storage)
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.categoriaService.procurarUm(+id);
   }
 
+  @Roles(Role.Admin, Role.Storage)
   @Patch(':id')
   update(
     @Param('id') id: number,
@@ -44,8 +44,7 @@ export class CategoriaController {
     return this.categoriaService.update(+id, updateCategoriaDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'storage')
+  @Roles(Role.Admin, 'admin', 'Admin')
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.categoriaService.remove(+id);
