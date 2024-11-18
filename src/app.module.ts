@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -14,6 +14,7 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { FormatCpfCnpjInterceptor } from './utils/cpf_cnpj_format.interceptor';
 import { DateFormattingInterceptor } from './utils/date_format.interceptor';
 import { ProdutoModule } from './produto/produto.module';
+import { RolesGuard } from './guards/role.guard';
 
 @Module({
   imports: [
@@ -38,6 +39,10 @@ import { ProdutoModule } from './produto/produto.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: DateFormattingInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })
